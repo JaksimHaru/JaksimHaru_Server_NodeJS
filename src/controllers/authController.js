@@ -5,17 +5,17 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import fetch from "cross-fetch";
 
-// export const refreshToken = async (req, res, next) => {
-//   const refreshToken = req.headers.cookie;
-//   const accessToken = req.body.
-//   console.log(refreshToken);
-//   if (!refreshToken) return res.status(401).json("You are not authenticated!");
-//   const userRefreshToken = await Token.findOne({ refreshToken });
-//   if (!userRefreshToken) {
-//     return res.status(403).json("Refresh token is not valid!");
-//   }
-//   jwt.verify(refreshToken, process.env.JWTREFRESH);
-// };
+export const refreshToken = async (req, res, next) => {
+  const refreshToken = req.headers.cookie;
+  console.log(refreshToken);
+  const accessToken = req.body.console.log(accessToken);
+  if (!refreshToken) return res.status(401).json("You are not authenticated!");
+  const userRefreshToken = await Token.findOne({ refreshToken });
+  if (!userRefreshToken) {
+    return res.status(403).json("Refresh token is not valid!");
+  }
+  res.json({ success: true });
+};
 
 export const signup = async (req, res, next) => {
   try {
