@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema(
     fromKakao: { type: Boolean, default: false },
     fromNaver: { type: Boolean, default: false },
     name: { type: String, required: true },
+    isAdmin: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

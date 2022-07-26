@@ -4,9 +4,13 @@ import {
   signup,
   loginWithKakao,
   loginWithNaver,
+  refreshToken,
 } from "../controllers/authController";
 
 const authRoutes = express.Router();
+
+//Controll JWT
+// authRoutes.post("/refresh", refreshToken);
 
 //CREATE A USER
 authRoutes.post("/signup", signup);

@@ -1,8 +1,21 @@
 import { createError } from "../error";
 import User from "../models/User";
+import Token from "../models/Token";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import fetch from "cross-fetch";
+
+// export const refreshToken = async (req, res, next) => {
+//   const refreshToken = req.headers.cookie;
+//   const accessToken = req.body.
+//   console.log(refreshToken);
+//   if (!refreshToken) return res.status(401).json("You are not authenticated!");
+//   const userRefreshToken = await Token.findOne({ refreshToken });
+//   if (!userRefreshToken) {
+//     return res.status(403).json("Refresh token is not valid!");
+//   }
+//   jwt.verify(refreshToken, process.env.JWTREFRESH);
+// };
 
 export const signup = async (req, res, next) => {
   try {
@@ -36,13 +49,36 @@ export const signin = async (req, res, next) => {
     if (!isCorrect) {
       return next(createError(400, "비밀번호가 일치하지 않습니다"));
     }
-    const token = jwt.sign({ id: user._id }, process.env.JWT);
-    return res
-      .cookie("access_token", token, {
+    const accessToken = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.JWT,
+      {
+        algorithm: "HS256",
+        expiresIn: "1h",
+      }
+    );
+    const refreshToken = jwt.sign({}, process.env.JWT, {
+      algorithm: "HS256",
+      expiresIn: "14d",
+    });
+    const isTokenExist = await Token.findOne({ userId: user._id });
+    if (isTokenExist) {
+      await Token.findOneAndUpdate(user._id, {
+        refreshToken,
+      });
+    } else {
+      await Token.create({
+        userId: user._id,
+        refreshToken,
+      });
+    }
+    res
+      .cookie("rft", refreshToken, {
         httpOnly: true,
+        secure: true,
       })
       .status(200)
-      .json(user);
+      .json({ accessToken });
   } catch (err) {
     next(err);
   }
@@ -92,13 +128,36 @@ export const loginWithKakao = async (req, res, next) => {
           fromKakao: true,
         });
       }
-      const token = jwt.sign({ id: user._id }, process.env.JWT);
-      return res
-        .cookie("access_token", token, {
+      const accessToken = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        process.env.JWT,
+        {
+          algorithm: "HS256",
+          expiresIn: "1h",
+        }
+      );
+      const refreshToken = jwt.sign({}, process.env.JWT, {
+        algorithm: "HS256",
+        expiresIn: "14d",
+      });
+      const isTokenExist = await Token.findOne({ userId: user._id });
+      if (isTokenExist) {
+        await Token.findOneAndUpdate(user._id, {
+          refreshToken,
+        });
+      } else {
+        await Token.create({
+          userId: user._id,
+          refreshToken,
+        });
+      }
+      res
+        .cookie("rft", refreshToken, {
           httpOnly: true,
+          secure: true,
         })
         .status(200)
-        .json(user);
+        .json({ accessToken });
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다."));
     }
@@ -145,13 +204,36 @@ export const loginWithNaver = async (req, res, next) => {
           name: userData.response.name,
         });
       }
-      const token = jwt.sign({ id: user._id }, process.env.JWT);
-      return res
-        .cookie("access_token", token, {
+      const accessToken = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        process.env.JWT,
+        {
+          algorithm: "HS256",
+          expiresIn: "1h",
+        }
+      );
+      const refreshToken = jwt.sign({}, process.env.JWT, {
+        algorithm: "HS256",
+        expiresIn: "14d",
+      });
+      const isTokenExist = await Token.findOne({ userId: user._id });
+      if (isTokenExist) {
+        await Token.findOneAndUpdate(user._id, {
+          refreshToken,
+        });
+      } else {
+        await Token.create({
+          userId: user._id,
+          refreshToken,
+        });
+      }
+      res
+        .cookie("rft", refreshToken, {
           httpOnly: true,
+          secure: true,
         })
         .status(200)
-        .json(user);
+        .json({ accessToken });
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다"));
     }
