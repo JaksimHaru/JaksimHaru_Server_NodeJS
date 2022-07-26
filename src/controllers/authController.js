@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import fetch from "cross-fetch";
 
 export const refreshToken = async (req, res, next) => {
-  const refreshToken = req.headers.rft;
+  const refreshToken = req.headers.refreshToken;
   console.log(refreshToken);
   const accessToken = req.body.accessToken;
   console.log(accessToken);
@@ -73,12 +73,7 @@ export const signin = async (req, res, next) => {
         refreshToken,
       });
     }
-    res
-      .cookie("refresh_token", refreshToken, {
-        httpOnly: true,
-      })
-      .status(200)
-      .json({ accessToken, user });
+    res.status(200).json({ refreshToken, accessToken, user });
   } catch (err) {
     next(err);
   }
