@@ -74,14 +74,17 @@ export const signin = async (req, res, next) => {
       });
     }
     res
-      .cookie("rft", refreshToken, {
-        domain: "jaksimharu.shop",
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-      })
+      // .cookie("rft", refreshToken, {
+      //   domain: "jaksimharu.shop",
+      //   httpOnly: true,
+      //   secure: true,
+      //   sameSite: "none",
+      // })
       .status(200)
-      .json({ accessToken, user });
+      .send({
+        accessToken,
+        refreshToken,
+      });
   } catch (err) {
     next(err);
   }
