@@ -11,7 +11,7 @@ app.use(logger);
 app.use(
   cors({
     origin: "http://jaksimharu.shop:8800",
-    optionsSuccessStatus: 200,
+    credentials: true,
   })
 );
 app.use(function (req, res, next) {
