@@ -10,7 +10,7 @@ const logger = morgan("dev");
 app.use(logger);
 app.use(
   cors({
-    origin: "http://jaksimharu.shop:8800",
+    origin: true,
     credentials: true,
   })
 );
