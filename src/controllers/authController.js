@@ -76,7 +76,7 @@ export const signin = async (req, res, next) => {
     res
       .cookie("rft", refreshToken, {
         httpOnly: false,
-        secure: isSecure,
+        secure: "isSecure",
         signed: true,
       })
       .status(200)
