@@ -76,8 +76,8 @@ export const signin = async (req, res, next) => {
     res
       .cookie("rft", refreshToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: "NONE",
+        secure: true,
+        sameSite: "none",
       })
       .status(200)
       .json({ accessToken, user });
