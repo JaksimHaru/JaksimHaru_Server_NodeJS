@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import fetch from "cross-fetch";
 
 export const refreshToken = async (req, res, next) => {
-  const refreshToken = req.headers.Set_cookie;
+  const refreshToken = req.headers.Set_Cookie;
   console.log(refreshToken);
   const accessToken = req.body.accessToken;
   console.log(accessToken);
