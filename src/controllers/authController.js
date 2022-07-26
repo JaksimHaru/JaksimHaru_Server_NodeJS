@@ -6,9 +6,9 @@ import jwt from "jsonwebtoken";
 import fetch from "cross-fetch";
 
 export const refreshToken = async (req, res, next) => {
-  const refreshToken = req.headers.refreshToken;
+  const refreshToken = req.headers.RefreshToken;
   console.log(refreshToken);
-  const accessToken = req.headers.accessToken;
+  const accessToken = req.headers.AccessToken;
   console.log(accessToken);
   if (!refreshToken) return res.status(401).json("You are not authenticated!");
   const userRefreshToken = await Token.findOne({ refreshToken });
