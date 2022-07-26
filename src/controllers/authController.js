@@ -78,7 +78,7 @@ export const signin = async (req, res, next) => {
         secure: true,
       })
       .status(200)
-      .json({ accessToken });
+      .json({ accessToken, user });
   } catch (err) {
     next(err);
   }
