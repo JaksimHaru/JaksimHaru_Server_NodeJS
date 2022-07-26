@@ -75,6 +75,7 @@ export const signin = async (req, res, next) => {
     }
     res
       .cookie("rft", refreshToken, {
+        domain: "jaksimharu.shop",
         httpOnly: true,
         secure: true,
         sameSite: "none",
