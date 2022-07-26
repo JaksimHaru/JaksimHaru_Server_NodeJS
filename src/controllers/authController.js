@@ -8,7 +8,7 @@ import fetch from "cross-fetch";
 export const refreshToken = async (req, res, next) => {
   // const refreshToken = req.headers.authorization;
   // console.log(refreshToken);
-  const accessToken = req.headers.Authorization;
+  const accessToken = req.headers;
   console.log(accessToken);
   if (!refreshToken) return res.status(401).json("You are not authenticated!");
   const userRefreshToken = await Token.findOne({ refreshToken });
