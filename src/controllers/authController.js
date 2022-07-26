@@ -157,7 +157,7 @@ export const loginWithKakao = async (req, res, next) => {
           secure: true,
         })
         .status(200)
-        .json({ accessToken });
+        .json({ accessToken, user });
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다."));
     }
@@ -233,7 +233,7 @@ export const loginWithNaver = async (req, res, next) => {
           secure: true,
         })
         .status(200)
-        .json({ accessToken });
+        .json({ accessToken, user });
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다"));
     }
