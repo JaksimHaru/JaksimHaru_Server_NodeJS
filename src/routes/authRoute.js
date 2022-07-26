@@ -10,7 +10,7 @@ import {
 const authRoutes = express.Router();
 
 //Controll JWT
-authRoutes.post("/refresh", refreshToken);
+authRoutes.get("/refresh", refreshToken);
 
 //CREATE A USER
 authRoutes.post("/signup", signup);
