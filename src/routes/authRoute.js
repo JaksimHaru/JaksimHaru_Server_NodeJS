@@ -6,11 +6,12 @@ import {
   loginWithNaver,
   refreshToken,
 } from "../controllers/authController";
+import { verifyToken } from "../verifyToken";
 
 const authRoutes = express.Router();
 
 //Controll JWT
-authRoutes.get("/refresh", refreshToken);
+authRoutes.get("/refresh", verifyToken, refreshToken);
 
 //CREATE A USER
 authRoutes.post("/signup", signup);

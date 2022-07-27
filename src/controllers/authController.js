@@ -6,16 +6,43 @@ import jwt from "jsonwebtoken";
 import fetch from "cross-fetch";
 
 export const refreshToken = async (req, res, next) => {
-  // const refreshToken = req.headers.authorization;
-  // console.log(refreshToken);
-  const accessToken = req.headers;
-  console.log(accessToken);
-  if (!refreshToken) return res.status(401).json("You are not authenticated!");
-  const userRefreshToken = await Token.findOne({ refreshToken });
-  if (!userRefreshToken) {
-    return res.status(403).json("Refresh token is not valid!");
+  const { refreshtoken, accesstoken } = req.headers;
+  if (!refreshtoken || !accesstoken) {
+    return next(
+      createError(401, "Refresh token or Access token is not exist.")
+    );
   }
-  res.json({ success: true });
+  const dbRefreshToken = await Token.findOne({ refreshToken: refreshtoken });
+  if (!dbRefreshToken) {
+    return next(createError(401, "You are not authenticated."));
+  }
+  const user = await User.findOne({ _id: dbRefreshToken.userId });
+  let newRefreshToken = refreshtoken;
+  jwt.verify(refreshtoken, process.env.JWT, (err, decoded) => {
+    if (err) {
+      if (err.name === "TokenExpiredError") {
+        newRefreshToken = jwt.sign({}, process.env.JWT, {
+          algorithm: "HS256",
+          expiresIn: "14d",
+        });
+      } else {
+        return next(createError(401, "Retry login."));
+      }
+    }
+  });
+  await Token.findOneAndUpdate(
+    { refreshToken: refreshtoken },
+    { refreshToken: newRefreshToken }
+  );
+  const accessToken = jwt.sign(
+    { id: user._id, isAdmin: user.isAdmin },
+    process.env.JWT,
+    {
+      algorithm: "HS256",
+      expiresIn: "1h",
+    }
+  );
+  res.status(200).json({ newRefreshToken, accessToken });
 };
 
 export const signup = async (req, res, next) => {
@@ -62,6 +89,8 @@ export const signin = async (req, res, next) => {
       algorithm: "HS256",
       expiresIn: "14d",
     });
+    console.log(accessToken);
+    console.log(refreshToken);
     const isTokenExist = await Token.findOne({ userId: user._id });
     if (isTokenExist) {
       await Token.findOneAndUpdate(user._id, {
