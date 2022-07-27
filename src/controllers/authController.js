@@ -89,8 +89,6 @@ export const signin = async (req, res, next) => {
       algorithm: "HS256",
       expiresIn: "14d",
     });
-    console.log(accessToken);
-    console.log(refreshToken);
     const isTokenExist = await Token.findOne({ userId: user._id });
     if (isTokenExist) {
       await Token.findOneAndUpdate(user._id, {
@@ -102,7 +100,7 @@ export const signin = async (req, res, next) => {
         refreshToken,
       });
     }
-    res.status(200).json({ refreshToken, accessToken, user });
+    res.status(200).json({ refreshToken, accessToken });
   } catch (err) {
     next(err);
   }
@@ -175,13 +173,7 @@ export const loginWithKakao = async (req, res, next) => {
           refreshToken,
         });
       }
-      res
-        .cookie("rft", refreshToken, {
-          httpOnly: true,
-          secure: true,
-        })
-        .status(200)
-        .json({ accessToken, user });
+      res.status(200).json({ refreshToken, accessToken });
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다."));
     }
@@ -251,13 +243,7 @@ export const loginWithNaver = async (req, res, next) => {
           refreshToken,
         });
       }
-      res
-        .cookie("rft", refreshToken, {
-          httpOnly: true,
-          secure: true,
-        })
-        .status(200)
-        .json({ accessToken, user });
+      res.status(200).json({ refreshToken, accessToken });
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다"));
     }
