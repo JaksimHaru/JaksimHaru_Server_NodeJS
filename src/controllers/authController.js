@@ -6,43 +6,47 @@ import jwt from "jsonwebtoken";
 import fetch from "cross-fetch";
 
 export const refreshToken = async (req, res, next) => {
-  const { refreshtoken, accesstoken } = req.headers;
-  if (!refreshtoken || !accesstoken) {
-    return next(
-      createError(401, "Refresh token or Access token is not exist.")
-    );
-  }
-  const dbRefreshToken = await Token.findOne({ refreshToken: refreshtoken });
-  if (!dbRefreshToken) {
-    return next(createError(401, "You are not authenticated."));
-  }
-  const user = await User.findOne({ _id: dbRefreshToken.userId });
-  let newRefreshToken = refreshtoken;
-  jwt.verify(refreshtoken, process.env.JWT, (err, decoded) => {
-    if (err) {
-      if (err.name === "TokenExpiredError") {
-        newRefreshToken = jwt.sign({}, process.env.JWT, {
-          algorithm: "HS256",
-          expiresIn: "14d",
-        });
-      } else {
-        return next(createError(401, "Retry login."));
+  try {
+    const { refreshtoken, accesstoken } = req.headers;
+    if (!refreshtoken || !accesstoken) {
+      return next(
+        createError(401, "Refresh token or Access token is not exist.")
+      );
+    }
+    const dbRefreshToken = await Token.findOne({ refreshToken: refreshtoken });
+    if (!dbRefreshToken) {
+      return next(createError(401, "You are not authenticated."));
+    }
+    const user = await User.findOne({ _id: dbRefreshToken.userId });
+    let newRefreshToken = refreshtoken;
+    jwt.verify(refreshtoken, process.env.JWT, (err, decoded) => {
+      if (err) {
+        if (err.name === "TokenExpiredError") {
+          newRefreshToken = jwt.sign({}, process.env.JWT, {
+            algorithm: "HS256",
+            expiresIn: "14d",
+          });
+        } else {
+          return next(createError(401, "Retry login."));
+        }
       }
-    }
-  });
-  await Token.findOneAndUpdate(
-    { refreshToken: refreshtoken },
-    { refreshToken: newRefreshToken }
-  );
-  const accessToken = jwt.sign(
-    { id: user._id, isAdmin: user.isAdmin },
-    process.env.JWT,
-    {
-      algorithm: "HS256",
-      expiresIn: "1h",
-    }
-  );
-  res.status(200).json({ newRefreshToken, accessToken });
+    });
+    await Token.findOneAndUpdate(
+      { refreshToken: refreshtoken },
+      { refreshToken: newRefreshToken }
+    );
+    const accessToken = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.JWT,
+      {
+        algorithm: "HS256",
+        expiresIn: "1h",
+      }
+    );
+    res.status(200).json({ newRefreshToken, accessToken });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const signup = async (req, res, next) => {
@@ -58,9 +62,8 @@ export const signup = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
     const newUser = new User({ ...req.body, password: hash });
-
     await newUser.save();
-    return res.status(200).send("success");
+    return res.status(200).json({ success: true });
   } catch (err) {
     next(err);
   }
@@ -100,7 +103,12 @@ export const signin = async (req, res, next) => {
         refreshToken,
       });
     }
-    res.status(200).json({ refreshToken, accessToken });
+    const responseUser = new User({
+      email: user.email,
+      name: user.name,
+      isAdmin: user.isAdmin,
+    });
+    res.status(200).json({ refreshToken, accessToken, responseUser });
   } catch (err) {
     next(err);
   }
@@ -173,7 +181,13 @@ export const loginWithKakao = async (req, res, next) => {
           refreshToken,
         });
       }
-      res.status(200).json({ refreshToken, accessToken });
+      const responseUser = new User({
+        email: user.email,
+        name: user.name,
+        img: user.img,
+        isAdmin: user.isAdmin,
+      });
+      res.status(200).json({ refreshToken, accessToken, responseUser });
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다."));
     }
@@ -243,7 +257,13 @@ export const loginWithNaver = async (req, res, next) => {
           refreshToken,
         });
       }
-      res.status(200).json({ refreshToken, accessToken });
+      const responseUser = new User({
+        email: user.email,
+        name: user.name,
+        img: user.img,
+        isAdmin: user.isAdmin,
+      });
+      res.status(200).json({ refreshToken, accessToken, responseUser });
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다"));
     }
