@@ -11,7 +11,7 @@ import { verifyToken } from "../verifyToken";
 const authRoutes = express.Router();
 
 //Controll JWT
-authRoutes.get("/refresh", verifyToken, refreshToken);
+authRoutes.get("/refresh", refreshToken);
 
 //CREATE A USER
 authRoutes.post("/signup", signup);

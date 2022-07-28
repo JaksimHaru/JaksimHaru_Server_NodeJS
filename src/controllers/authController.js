@@ -58,9 +58,8 @@ export const signup = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
     const newUser = new User({ ...req.body, password: hash });
-
     await newUser.save();
-    return res.status(200).send("success");
+    return res.status(200).json({ success: true });
   } catch (err) {
     next(err);
   }
@@ -100,7 +99,9 @@ export const signin = async (req, res, next) => {
         refreshToken,
       });
     }
-    res.status(200).json({ refreshToken, accessToken });
+    res
+      .status(200)
+      .json({ refreshToken, accessToken }, user.email, user.name, user.isAdmin);
   } catch (err) {
     next(err);
   }
@@ -173,7 +174,15 @@ export const loginWithKakao = async (req, res, next) => {
           refreshToken,
         });
       }
-      res.status(200).json({ refreshToken, accessToken });
+      res
+        .status(200)
+        .json(
+          { refreshToken, accessToken },
+          user.email,
+          user.name,
+          user.img,
+          user.isAdmin
+        );
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다."));
     }
@@ -243,7 +252,15 @@ export const loginWithNaver = async (req, res, next) => {
           refreshToken,
         });
       }
-      res.status(200).json({ refreshToken, accessToken });
+      res
+        .status(200)
+        .json(
+          { refreshToken, accessToken },
+          user.email,
+          user.name,
+          user.img,
+          user.isAdmin
+        );
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다"));
     }
