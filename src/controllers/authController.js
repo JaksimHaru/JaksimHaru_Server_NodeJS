@@ -99,9 +99,12 @@ export const signin = async (req, res, next) => {
         refreshToken,
       });
     }
-    res
-      .status(200)
-      .json({ refreshToken, accessToken }, user.email, user.name, user.isAdmin);
+    const responseUser = new User({
+      email: user.email,
+      name: user.name,
+      isAdmin: user.isAdmin,
+    });
+    res.status(200).json({ refreshToken, accessToken, responseUser });
   } catch (err) {
     next(err);
   }
@@ -174,15 +177,13 @@ export const loginWithKakao = async (req, res, next) => {
           refreshToken,
         });
       }
-      res
-        .status(200)
-        .json(
-          { refreshToken, accessToken },
-          user.email,
-          user.name,
-          user.img,
-          user.isAdmin
-        );
+      const responseUser = new User({
+        email: user.email,
+        name: user.name,
+        img: user.img,
+        isAdmin: user.isAdmin,
+      });
+      res.status(200).json({ refreshToken, accessToken, responseUser });
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다."));
     }
@@ -252,15 +253,13 @@ export const loginWithNaver = async (req, res, next) => {
           refreshToken,
         });
       }
-      res
-        .status(200)
-        .json(
-          { refreshToken, accessToken },
-          user.email,
-          user.name,
-          user.img,
-          user.isAdmin
-        );
+      const responseUser = new User({
+        email: user.email,
+        name: user.name,
+        img: user.img,
+        isAdmin: user.isAdmin,
+      });
+      res.status(200).json({ refreshToken, accessToken, responseUser });
     } else {
       return next(createError(404, "Access Token이 존재하지 않습니다"));
     }
