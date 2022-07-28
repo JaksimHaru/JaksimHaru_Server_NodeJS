@@ -6,43 +6,47 @@ import jwt from "jsonwebtoken";
 import fetch from "cross-fetch";
 
 export const refreshToken = async (req, res, next) => {
-  const { refreshtoken, accesstoken } = req.headers;
-  if (!refreshtoken || !accesstoken) {
-    return next(
-      createError(401, "Refresh token or Access token is not exist.")
-    );
-  }
-  const dbRefreshToken = await Token.findOne({ refreshToken: refreshtoken });
-  if (!dbRefreshToken) {
-    return next(createError(401, "You are not authenticated."));
-  }
-  const user = await User.findOne({ _id: dbRefreshToken.userId });
-  let newRefreshToken = refreshtoken;
-  jwt.verify(refreshtoken, process.env.JWT, (err, decoded) => {
-    if (err) {
-      if (err.name === "TokenExpiredError") {
-        newRefreshToken = jwt.sign({}, process.env.JWT, {
-          algorithm: "HS256",
-          expiresIn: "14d",
-        });
-      } else {
-        return next(createError(401, "Retry login."));
+  try {
+    const { refreshtoken, accesstoken } = req.headers;
+    if (!refreshtoken || !accesstoken) {
+      return next(
+        createError(401, "Refresh token or Access token is not exist.")
+      );
+    }
+    const dbRefreshToken = await Token.findOne({ refreshToken: refreshtoken });
+    if (!dbRefreshToken) {
+      return next(createError(401, "You are not authenticated."));
+    }
+    const user = await User.findOne({ _id: dbRefreshToken.userId });
+    let newRefreshToken = refreshtoken;
+    jwt.verify(refreshtoken, process.env.JWT, (err, decoded) => {
+      if (err) {
+        if (err.name === "TokenExpiredError") {
+          newRefreshToken = jwt.sign({}, process.env.JWT, {
+            algorithm: "HS256",
+            expiresIn: "14d",
+          });
+        } else {
+          return next(createError(401, "Retry login."));
+        }
       }
-    }
-  });
-  await Token.findOneAndUpdate(
-    { refreshToken: refreshtoken },
-    { refreshToken: newRefreshToken }
-  );
-  const accessToken = jwt.sign(
-    { id: user._id, isAdmin: user.isAdmin },
-    process.env.JWT,
-    {
-      algorithm: "HS256",
-      expiresIn: "1h",
-    }
-  );
-  res.status(200).json({ newRefreshToken, accessToken });
+    });
+    await Token.findOneAndUpdate(
+      { refreshToken: refreshtoken },
+      { refreshToken: newRefreshToken }
+    );
+    const accessToken = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.JWT,
+      {
+        algorithm: "HS256",
+        expiresIn: "1h",
+      }
+    );
+    res.status(200).json({ newRefreshToken, accessToken });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const signup = async (req, res, next) => {
