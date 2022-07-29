@@ -153,6 +153,7 @@ export const loginWithKakao = async (req, res, next) => {
         user = await User.create({
           email: userData.kakao_account.email,
           password: "",
+          toDo: [],
           img: userData.properties.profile_image,
           name: userData.kakao_account.profile.nickname,
           fromKakao: true,
@@ -230,6 +231,7 @@ export const loginWithNaver = async (req, res, next) => {
           email: userData.response.email,
           password: "",
           img: userData.response.profile_image,
+          toDo: [],
           fromNaver: true,
           name: userData.response.name,
         });

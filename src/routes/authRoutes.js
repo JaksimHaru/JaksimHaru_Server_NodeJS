@@ -6,7 +6,6 @@ import {
   loginWithNaver,
   refreshToken,
 } from "../controllers/authController";
-import { verifyToken } from "../verifyToken";
 
 const authRoutes = express.Router();
 

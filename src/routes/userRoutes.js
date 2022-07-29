@@ -2,8 +2,8 @@ import express from "express";
 import { getTodo, postTodo } from "../controllers/userController";
 import { verifyToken } from "../verifyToken";
 
-const userRoute = express.Router();
+const userRoutes = express.Router();
 
-userRoute.route("/todo").all(verifyToken).get(getTodo).post(postTodo);
+userRoutes.route("/todo").all(verifyToken).get(getTodo).post(postTodo);
 
-export default userRoute;
+export default userRoutes;
