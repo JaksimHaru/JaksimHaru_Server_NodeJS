@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema(
     fromNaver: { type: Boolean, default: false },
     name: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
-    toDo: [{ type: String, trim: true, unique: true }],
+    toDo: [{ type: String, trim: true }],
     password: { type: String },
   },
   { timestamps: true }

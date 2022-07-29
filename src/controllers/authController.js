@@ -187,6 +187,7 @@ export const loginWithKakao = async (req, res, next) => {
         name: user.name,
         img: user.img,
         isAdmin: user.isAdmin,
+        
       });
       res.status(200).json({ refreshToken, accessToken, responseUser });
     } else {
