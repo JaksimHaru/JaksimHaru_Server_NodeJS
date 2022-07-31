@@ -30,9 +30,15 @@ export const postEditProfile = async (req, res, next) => {
   try {
     console.log(req);
     console.log(file);
-    // const updatedUser = await User.findByIdAndUpdate(req.user.id{
-    //     img: file.location
-    // })
+    if (!file) return next(createError(404, "File not found"));
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        img: file.location,
+      },
+      { new: true }
+    );
+    res.status(200).json({ success: true, updatedImage: updatedUser.img });
   } catch (err) {
     next(err);
   }
