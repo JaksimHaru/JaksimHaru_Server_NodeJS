@@ -10,7 +10,7 @@ const s3 = new aws.S3({
 
 const s3ImageUploader = multerS3({
   s3: s3,
-  bucket: "jaksimharu",
+  bucket: "jaksimharu/images",
   contentType: multerS3.AUTO_CONTENT_TYPE,
   key: function (req, file, cb) {
     cb(null, `${Date.now()}_${file.originalname}`);
