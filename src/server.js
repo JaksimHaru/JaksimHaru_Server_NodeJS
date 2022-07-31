@@ -1,8 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import authRoutes from "./routes/authRoute";
-import userRoutes from "./routes/userRoute";
+import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
 import cookieParser from "cookie-parser";
 
 const app = express();
@@ -25,6 +25,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
+app.use("/public", express.static("public"));
 app.use(cookieParser());
 app.use(express.json());
 

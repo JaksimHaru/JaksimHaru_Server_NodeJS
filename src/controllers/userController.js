@@ -23,3 +23,22 @@ export const postTodo = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getEditProfile = async (req, res, next) => {};
+
+export const postEditProfile = async (req, res, next) => {
+  try {
+    const { file } = req;
+    if (!file) return next(createError(404, "File not found"));
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        img: req.file.location,
+      },
+      { new: true }
+    );
+    res.status(200).json({ success: true, updatedImg: updatedUser.img });
+  } catch (err) {
+    next(err);
+  }
+};

@@ -61,7 +61,7 @@ export const signup = async (req, res, next) => {
     }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
-    const newUser = new User({ ...req.body, password: hash });
+    const newUser = new User({ ...req.body,img: "", password: hash });
     await newUser.save();
     return res.status(200).json({ success: true });
   } catch (err) {
@@ -104,8 +104,10 @@ export const signin = async (req, res, next) => {
       });
     }
     const responseUser = new User({
+      _id: user._id,
       email: user.email,
       name: user.name,
+      toDo: user.toDo,
       isAdmin: user.isAdmin,
     });
     res.status(200).json({ refreshToken, accessToken, responseUser });
@@ -153,6 +155,7 @@ export const loginWithKakao = async (req, res, next) => {
         user = await User.create({
           email: userData.kakao_account.email,
           password: "",
+          toDo: [],
           img: userData.properties.profile_image,
           name: userData.kakao_account.profile.nickname,
           fromKakao: true,
@@ -182,10 +185,13 @@ export const loginWithKakao = async (req, res, next) => {
         });
       }
       const responseUser = new User({
+        _id: user._id,
         email: user.email,
         name: user.name,
         img: user.img,
         isAdmin: user.isAdmin,
+        toDo: user.toDo,
+        fromKakao: true,
       });
       res.status(200).json({ refreshToken, accessToken, responseUser });
     } else {
@@ -230,6 +236,7 @@ export const loginWithNaver = async (req, res, next) => {
           email: userData.response.email,
           password: "",
           img: userData.response.profile_image,
+          toDo: [],
           fromNaver: true,
           name: userData.response.name,
         });
@@ -258,9 +265,12 @@ export const loginWithNaver = async (req, res, next) => {
         });
       }
       const responseUser = new User({
+        _id: user._id,
         email: user.email,
         name: user.name,
         img: user.img,
+        fromNaver: true,
+        toDo: user.toDo,
         isAdmin: user.isAdmin,
       });
       res.status(200).json({ refreshToken, accessToken, responseUser });
