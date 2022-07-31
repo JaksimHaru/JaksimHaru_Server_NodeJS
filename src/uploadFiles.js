@@ -12,7 +12,7 @@ const s3 = new aws.S3({
 const s3ImageUploader = multerS3({
   s3: s3,
   bucket: "jaksimharu",
-  acl: "public-read",
+  acl: "public-read-write",
 });
 
 export const imageUpload = multer({
