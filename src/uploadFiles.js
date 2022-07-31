@@ -9,12 +9,10 @@ const s3 = new aws.S3({
   },
 });
 
-const s3ImageUploader = multer({
-  storage: multerS3({
-    s3: s3,
-    acl: "public-read",
-    bucket: "jaksimharu/images",
-  }),
+const s3ImageUploader = multerS3({
+  s3: s3,
+  bucket: "jaksimharu/images",
+  acl: "public-read",
 });
 
 export const uploadImage = s3ImageUploader.single("image");
