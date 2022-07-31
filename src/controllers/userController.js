@@ -34,7 +34,7 @@ export const postEditProfile = async (req, res, next) => {
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
       {
-        img: file.location,
+        img: req.file.location,
       },
       { new: true }
     );
