@@ -7,8 +7,7 @@ export const verifyToken = (req, res, next) => {
   if (!accessToken) {
     return next(createError(401, "로그인이 필요합니다"));
   }
-  const verifyAccessToken = accessToken.split(" ")[1];
-  jwt.verify(verifyAccessToken, process.env.JWT, (error, user) => {
+  jwt.verify(accessToken, process.env.JWT, (error, user) => {
     if (error) {
       return next(createError(403, "Token is not valid!"));
     }
