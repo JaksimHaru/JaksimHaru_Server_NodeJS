@@ -13,10 +13,6 @@ const s3ImageUploader = multer({
     s3: s3,
     acl: "public-read",
     bucket: "jaksimharu/images",
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    key: function (req, file, cb) {
-      cb(null, `${Date.now()}_${file.originalname}`);
-    },
   }),
 });
 

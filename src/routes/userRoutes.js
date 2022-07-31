@@ -4,7 +4,6 @@ import { uploadImage } from "../uploadFiles";
 import { verifyToken } from "../verifyToken";
 
 const userRoutes = express.Router();
-userRoutes.post("/");
 
 userRoutes.get("/edit-profile", verifyToken, getEditProfile);
 
