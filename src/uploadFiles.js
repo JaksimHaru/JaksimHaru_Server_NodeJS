@@ -15,4 +15,10 @@ const s3ImageUploader = multerS3({
   acl: "public-read",
 });
 
-export const uploadImage = s3ImageUploader.single("image");
+export const imageUpload = multer({
+  dest: "uploads/images/",
+  limits: {
+    fileSize: 3000000,
+  },
+  storage: s3ImageUploader,
+});
