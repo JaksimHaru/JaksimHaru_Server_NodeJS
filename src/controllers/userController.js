@@ -28,8 +28,7 @@ export const getEditProfile = async (req, res, next) => {};
 
 export const postEditProfile = async (req, res, next) => {
   try {
-    const { file } = req;
-    console.log(file);
+    console.log(req);
     // const updatedUser = await User.findByIdAndUpdate(req.user.id{
     //     img: file.location
     // })
