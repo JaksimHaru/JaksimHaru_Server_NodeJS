@@ -3,7 +3,7 @@ import { createError } from "./error";
 
 export const verifyToken = (req, res, next) => {
   console.log(req.headers);
-  const accessToken = req.headers.accesstoken;
+  const accessToken = req.headers.authorization;
   if (!accessToken) {
     return next(createError(401, "로그인이 필요합니다"));
   }
