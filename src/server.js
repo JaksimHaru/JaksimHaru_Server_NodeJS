@@ -25,6 +25,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
+app.use("/public", express.static("public"));
 app.use(cookieParser());
 app.use(express.json());
 

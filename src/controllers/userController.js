@@ -23,3 +23,17 @@ export const postTodo = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getEditProfile = async (req, res, next) => {};
+
+export const postEditProfile = async (req, res, next) => {
+  try {
+    const { file } = req;
+    console.log(file);
+    // const updatedUser = await User.findByIdAndUpdate(req.user.id{
+    //     img: file.location
+    // })
+  } catch (err) {
+    next(err);
+  }
+};

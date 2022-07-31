@@ -104,8 +104,10 @@ export const signin = async (req, res, next) => {
       });
     }
     const responseUser = new User({
+      _id: user._id,
       email: user.email,
       name: user.name,
+      toDo: user.toDo,
       isAdmin: user.isAdmin,
     });
     res.status(200).json({ refreshToken, accessToken, responseUser });
@@ -183,11 +185,13 @@ export const loginWithKakao = async (req, res, next) => {
         });
       }
       const responseUser = new User({
+        _id: user._id,
         email: user.email,
         name: user.name,
         img: user.img,
         isAdmin: user.isAdmin,
-        
+        toDo: user.toDo,
+        fromKakao: true,
       });
       res.status(200).json({ refreshToken, accessToken, responseUser });
     } else {
@@ -261,9 +265,12 @@ export const loginWithNaver = async (req, res, next) => {
         });
       }
       const responseUser = new User({
+        _id: user._id,
         email: user.email,
         name: user.name,
         img: user.img,
+        fromNaver: true,
+        toDo: user.toDo,
         isAdmin: user.isAdmin,
       });
       res.status(200).json({ refreshToken, accessToken, responseUser });
