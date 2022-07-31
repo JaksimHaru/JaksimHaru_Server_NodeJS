@@ -12,13 +12,9 @@ const s3 = new aws.S3({
 const s3ImageUploader = multerS3({
   s3: s3,
   bucket: "jaksimharu",
-  acl: "public-read-write",
+  acl: "public-read",
 });
 
 export const imageUpload = multer({
-  dest: "uploads/images/",
-  limits: {
-    fileSize: 3000000,
-  },
   storage: s3ImageUploader,
 });

@@ -10,7 +10,7 @@ userRoutes.get("/edit-profile", verifyToken, getEditProfile);
 userRoutes.post(
   "/edit-profile",
   verifyToken,
-  imageUpload.single("file"),
+  imageUpload.single("image"),
   postEditProfile
 );
 
