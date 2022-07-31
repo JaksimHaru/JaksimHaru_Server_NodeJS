@@ -3,8 +3,8 @@ import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 
 const s3 = new aws.S3({
-  accessKeyId: "AKIA3N2VAGF4CHMFT6X6",
-  secretAccessKey: "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",
+  accessKeyId: process.env.AWS_ID,
+  secretAccessKey: process.env.AWS_SECRET,
   region: "ap-northeast-2",
 });
 
