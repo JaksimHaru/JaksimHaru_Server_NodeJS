@@ -1,11 +1,15 @@
 import express from "express";
-import { postEditProfile, getEditProfile } from "../controllers/userController";
+import {
+  postEditProfile,
+  getTodo,
+  postTodo,
+} from "../controllers/userController";
 import { imageUpload } from "../uploadFiles";
 import { verifyToken } from "../verifyToken";
 
 const userRoutes = express.Router();
 
-userRoutes.get("/edit-profile", verifyToken, getEditProfile);
+userRoutes.route("/todo").all(verifyToken).get(getTodo).post(postTodo);
 
 userRoutes.post(
   "/edit-profile",

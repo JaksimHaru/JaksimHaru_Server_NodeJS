@@ -14,6 +14,11 @@ const specs = swaggerJsDoc(swaggerOptions);
 
 app.use(logger);
 app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
+app.use(
   cors({
     origin: "http://localhost:3000",
     credentials: true,
@@ -32,11 +37,6 @@ app.use(function (req, res, next) {
 app.use(cookieParser());
 app.use(express.json());
 
-app.use(
-  "/swagger",
-  swaggerUi.serve,
-  swaggerUi.setup(specs, { explorer: true })
-);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 

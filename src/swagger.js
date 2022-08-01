@@ -1,18 +1,14 @@
 const options = {
-    swaggerDefinition: {
-      openapi: "3.0.0",
-      info: {
-        title: "Express Service with Swagger!",
-        version: "1.0.0",
-        description: "A REST API using swagger and express.",
-      },
-      servers: [
-        {
-          url: "http://jaksimharu.shop:8800",
-        },
-      ],
+  swaggerDefinition: {
+    info: {
+      title: "JaksimHaru API",
+      version: "1.0.0",
+      description: "JSHR API with express",
     },
-    apis: [],
-  };
-  
-  export default options;
+    host: "localhost:8800",
+    basePath: "/",
+  },
+  apis: ["./routes/*.js", "./swagger/*"],
+};
+
+export default options;
