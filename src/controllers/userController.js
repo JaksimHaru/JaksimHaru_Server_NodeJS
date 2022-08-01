@@ -13,6 +13,7 @@ export const getTodo = async (req, res, next) => {
 
 export const postTodo = async (req, res, next) => {
   try {
+    console.log(req.body);
     if (!req.user) return next(createError(401, "You are not authenticated."));
     await User.findByIdAndUpdate(
       { _id: req.user.id },
