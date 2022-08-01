@@ -4,9 +4,13 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerOptions from "./swagger";
 
 const app = express();
 const logger = morgan("dev");
+const specs = swaggerJsDoc(swaggerOptions);
 
 app.use(logger);
 app.use(
@@ -25,10 +29,14 @@ app.use(function (req, res, next) {
   );
   next();
 });
-app.use("/public", express.static("public"));
 app.use(cookieParser());
 app.use(express.json());
 
+app.use(
+  "/swagger",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
