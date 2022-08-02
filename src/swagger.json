@@ -1,0 +1,377 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Parveen App API",
+    "description": "Find out how your APIs work",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "jaksimharu.shop:8800",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "유저 인증 관련 API"
+    }
+  ],
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "type": "apiKey",
+      "in": "headers",
+      "name": "authorization"
+    }
+  },
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "회원가입",
+        "tags": ["Auth"],
+        "description": "회원가입 성공시 success: true 반환",
+        "parameters": [
+          {
+            "name": "Post data",
+            "in": "body",
+            "description": "Signup user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "password1": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Login Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "비밀번호가 일치하지 않거나 이미 존재하는 이메일"
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "summary": "자체 로그인",
+        "tags": ["Auth"],
+        "description": "로그인 성공시 AccessToken, RefreshToken, 유저정보 반환",
+        "parameters": [
+          {
+            "name": "Post data",
+            "in": "body",
+            "description": "Signin user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Login Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "refreshToken": {
+                  "type": "string"
+                },
+                "accessToken": {
+                  "type": "string"
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "toDo": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TodoObject"
+                  }
+                },
+                "isAdmin": {
+                  "type": "boolean",
+                  "default": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "비밀번호가 일치하지 않음"
+          },
+          "404": {
+            "description": "존재하지 않는 아이디"
+          }
+        }
+      }
+    },
+    "/auth/kakao/login": {
+      "post": {
+        "summary": "카카오 로그인",
+        "tags": ["Auth"],
+        "description": "로그인 성공시 AccessToken, RefreshToken, 유저정보 반환",
+        "parameters": [
+          {
+            "name": "Post data",
+            "in": "body",
+            "description": "Signin user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Login Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "refreshToken": {
+                  "type": "string"
+                },
+                "accessToken": {
+                  "type": "string"
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "toDo": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TodoObject"
+                  }
+                },
+                "isAdmin": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "img": {
+                  "type": "string"
+                },
+                "fromKakao": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "로그인 실패"
+          }
+        }
+      }
+    },
+    "/auth/naver/login": {
+      "post": {
+        "summary": "네이버 로그인",
+        "tags": ["Auth"],
+        "description": "로그인 성공시 AccessToken, RefreshToken, 유저정보 반환",
+        "parameters": [
+          {
+            "name": "Post data",
+            "in": "body",
+            "description": "Signin user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Login Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "refreshToken": {
+                  "type": "string"
+                },
+                "accessToken": {
+                  "type": "string"
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "toDo": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TodoObject"
+                  }
+                },
+                "isAdmin": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "img": {
+                  "type": "string"
+                },
+                "fromNaver": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "로그인 실패"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "get": {
+        "summary": "AccessToken 재발급",
+        "tags": ["Auth"],
+        "description": "AccessToken 재발급 RefreshToken 도 만료시 같이 재발급",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "재발급 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "accessToken": {
+                  "type": "string"
+                },
+                "refreshToken": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "User": {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "img": {
+          "type": "string"
+        },
+        "fromKakao": {
+          "type": "boolean"
+        },
+        "fromNaver": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isAdmin": {
+          "type": "boolean"
+        },
+        "password": {
+          "type": "string"
+        },
+        "toDo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TodoObject"
+          }
+        }
+      }
+    },
+    "Token": {
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "refreshToken": {
+          "type": "string"
+        }
+      }
+    },
+    "TodoObject": {
+      "properties": {
+        "data": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "isChecked": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

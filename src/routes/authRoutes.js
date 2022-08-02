@@ -9,7 +9,6 @@ import {
 
 const authRoutes = express.Router();
 
-//Controll JWT
 authRoutes.get("/refresh", refreshToken);
 
 //CREATE A USER
