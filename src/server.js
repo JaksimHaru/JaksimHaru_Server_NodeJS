@@ -4,20 +4,16 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import cookieParser from "cookie-parser";
-import swaggerUi from "swagger-ui-express";
-import swaggerJsDoc from "swagger-jsdoc";
-import swaggerOptions from "./swagger";
+import swaggerUI from "swagger-ui-express";
+import swaggerDocs from "./swagger.json";
 
 const app = express();
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
 const logger = morgan("dev");
-const specs = swaggerJsDoc(swaggerOptions);
 
 app.use(logger);
-app.use(
-  "/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(specs, { explorer: true })
-);
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -38,6 +34,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+
 app.use("/api/users", userRoutes);
 
 app.use((err, req, res, next) => {

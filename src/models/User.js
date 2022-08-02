@@ -8,18 +8,14 @@ const UserSchema = new mongoose.Schema(
     fromNaver: { type: Boolean, default: false },
     name: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+    password: { type: String },
     toDo: [
       {
-        date: { type: String, trim: true },
-        contents: [
-          {
-            content: { type: String, trim: true },
-            isChecked: { type: Boolean, default: false },
-          },
-        ],
+        date: { type: String },
+        content: { type: String, trim: true },
+        isChecked: { type: Boolean, default: false },
       },
     ],
-    password: { type: String },
   },
   { timestamps: true }
 );
