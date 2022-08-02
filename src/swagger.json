@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Parveen App API",
-    "description": "Find out how your APIs work",
+    "title": "JSHR App API",
+    "description": "작심하루 API 목록",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -13,8 +13,12 @@
   "basePath": "/api",
   "tags": [
     {
-      "name": "Auth",
+      "name": "Auth API",
       "description": "유저 인증 관련 API"
+    },
+    {
+      "name": "User API",
+      "description": "User 정보 관련 API"
     }
   ],
   "schemes": ["http", "https"],
@@ -31,7 +35,7 @@
     "/auth/signup": {
       "post": {
         "summary": "회원가입",
-        "tags": ["Auth"],
+        "tags": ["Auth API"],
         "description": "회원가입 성공시 success: true 반환",
         "parameters": [
           {
@@ -79,7 +83,7 @@
     "/auth/signin": {
       "post": {
         "summary": "자체 로그인",
-        "tags": ["Auth"],
+        "tags": ["Auth API"],
         "description": "로그인 성공시 AccessToken, RefreshToken, 유저정보 반환",
         "parameters": [
           {
@@ -149,7 +153,7 @@
     "/auth/kakao/login": {
       "post": {
         "summary": "카카오 로그인",
-        "tags": ["Auth"],
+        "tags": ["Auth API"],
         "description": "로그인 성공시 AccessToken, RefreshToken, 유저정보 반환",
         "parameters": [
           {
@@ -219,7 +223,7 @@
     "/auth/naver/login": {
       "post": {
         "summary": "네이버 로그인",
-        "tags": ["Auth"],
+        "tags": ["Auth API"],
         "description": "로그인 성공시 AccessToken, RefreshToken, 유저정보 반환",
         "parameters": [
           {
@@ -289,7 +293,7 @@
     "/auth/refresh": {
       "get": {
         "summary": "AccessToken 재발급",
-        "tags": ["Auth"],
+        "tags": ["Auth API"],
         "description": "AccessToken 재발급 RefreshToken 도 만료시 같이 재발급",
         "produces": ["application/json"],
         "responses": {
@@ -312,6 +316,165 @@
           },
           "401": {
             "description": "다시 로그인 필요"
+          }
+        }
+      }
+    },
+    "/auth/users/todo": {
+      "get": {
+        "summary": "AccessToken에 담긴 유저정보로 Todo 조회",
+        "tags": ["User API"],
+        "description": "유저 Todo 목록 반환",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Login Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "toDo": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TodoObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      },
+      "post": {
+        "summary": "AccessToken에 담긴 유저정보로 Todo 한개 저장",
+        "tags": ["User API"],
+        "description": "유저 Todo 목록 반환",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Post data",
+            "in": "body",
+            "description": "Todo 한개 저장",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "isChecked": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo 저장 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "toDo": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TodoObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      },
+      "delete": {
+        "summary": "AccessToken에 담긴 유저정보로 Todo 조회",
+        "tags": ["User API"],
+        "description": "유저 Todo 목록 반환",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Delete data",
+            "in": "body",
+            "description": "AccessToken을 가진 유저의 Todo ObjectId로 한개 삭제",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo 한개 삭제",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "toDo": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TodoObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      }
+    },
+    "/users/edit-profile": {
+      "post": {
+        "summary": "회원가입",
+        "tags": ["User API"],
+        "description": "유저 프로필 사진 변경",
+        "parameters": [
+          {
+            "name": "Post Image",
+            "in": "formData",
+            "description": "form-data로 이미지 Post ",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Edit-Profile Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "updatedImg": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "파일을 찾을 수 없습니다."
           }
         }
       }
@@ -370,6 +533,9 @@
         },
         "isChecked": {
           "type": "boolean"
+        },
+        "_id": {
+          "type": "string"
         }
       }
     }
