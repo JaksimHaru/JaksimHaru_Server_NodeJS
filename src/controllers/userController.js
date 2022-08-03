@@ -35,13 +35,12 @@ export const postTodo = async (req, res, next) => {
 
 export const deleteTodo = async (req, res, next) => {
   try {
-    console.log(req.user);
     if (!req.user) return next(createError(401, "You are not authenticated."));
-    await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { _id: req.user.id },
       { $pull: { toDo: { _id: req.body.id } } }
     );
-    res.status(200).json({ success: true });
+    res.status(200).json({ success: true, toDos: user.toDo });
   } catch (err) {
     next(err);
   }
