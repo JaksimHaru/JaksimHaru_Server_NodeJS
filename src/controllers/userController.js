@@ -39,7 +39,7 @@ export const deleteTodo = async (req, res, next) => {
     console.log(req.body);
     let user = await User.findOneAndUpdate(
       { _id: req.user.id },
-      { $pull: { toDo: req.body.id } }
+      { $pull: { toDo: { _id: req.body.id } } }
     );
     res.status(200).json({ success: true, toDos: user.toDo });
   } catch (err) {
