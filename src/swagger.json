@@ -525,7 +525,7 @@
     },
     "TodoObject": {
       "properties": {
-        "data": {
+        "date": {
           "type": "string"
         },
         "content": {
