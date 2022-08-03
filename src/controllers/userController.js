@@ -5,9 +5,6 @@ export const getTodo = async (req, res, next) => {
   try {
     if (!req.user) return next(createError(401, "You are not authenticated."));
     const user = await User.findOne({ _id: req.user.id });
-    let responseTodo = user.toDo;
-    console.log(responseTodo);
-
     res.status(200).json({ success: true, toDos: user.toDo });
   } catch (err) {
     next(err);

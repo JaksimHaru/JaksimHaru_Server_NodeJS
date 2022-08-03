@@ -335,7 +335,7 @@
                 "success": {
                   "type": "boolean"
                 },
-                "toDo": {
+                "toDos": {
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/TodoObject"
