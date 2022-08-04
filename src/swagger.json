@@ -320,7 +320,7 @@
         }
       }
     },
-    "/auth/users/todo": {
+    "/users/todo": {
       "get": {
         "summary": "AccessToken에 담긴 유저정보로 Todo 조회",
         "tags": ["User API"],
@@ -335,7 +335,7 @@
                 "success": {
                   "type": "boolean"
                 },
-                "toDo": {
+                "toDos": {
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/TodoObject"
@@ -428,6 +428,82 @@
                   "type": "boolean"
                 },
                 "toDo": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TodoObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      },
+      "put": {
+        "summary": "AccessToken에 담긴 유저정보로 Todo isChecked 수정",
+        "tags": ["User API"],
+        "description": "유저 Todo isChecked 수정",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "modify isChecked",
+            "in": "body",
+            "description": "Todo 한개 수정",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "isChecked": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo 저장 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "toDos": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TodoObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      }
+    },
+    "/users/todo/:date": {
+      "get": {
+        "summary": "AccessToken에 담긴 유저정보로 Todo 날짜별 조회",
+        "tags": ["User API"],
+        "description": "유저 Todo 목록 반환",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Login Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "toDos": {
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/TodoObject"

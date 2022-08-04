@@ -115,6 +115,7 @@ export const signin = async (req, res, next) => {
       name: user.name,
       toDo: user.toDo,
       isAdmin: user.isAdmin,
+      img: user.img,
     });
     res.status(200).json({ refreshToken, accessToken, responseUser });
   } catch (err) {
