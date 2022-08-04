@@ -2,8 +2,12 @@ import express from "express";
 import {
   postEditProfile,
   getTodo,
+  getDateTodo,
   postTodo,
   deleteTodo,
+  getSchedule,
+  postSchedule,
+  deleteSchedule,
 } from "../controllers/userController";
 import { imageUpload } from "../uploadFiles";
 import { verifyToken } from "../verifyToken";
@@ -16,6 +20,15 @@ userRoutes
   .get(getTodo)
   .post(postTodo)
   .delete(deleteTodo);
+
+userRoutes.get("/todo/:date", verifyToken, getDateTodo);
+
+userRoutes
+  .route("/schedule")
+  .all(verifyToken)
+  .get(getSchedule)
+  .post(postSchedule)
+  .delete(deleteSchedule);
 
 userRoutes.post(
   "/edit-profile",

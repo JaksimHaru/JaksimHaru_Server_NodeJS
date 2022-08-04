@@ -442,6 +442,36 @@
         }
       }
     },
+    "/auth/users/:date": {
+      "get": {
+        "summary": "AccessToken에 담긴 유저정보로 Todo 조회",
+        "tags": ["User API"],
+        "description": "유저 Todo 목록 반환",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Login Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "toDos": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/TodoObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      }
+    },
     "/users/edit-profile": {
       "post": {
         "summary": "회원가입",

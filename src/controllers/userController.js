@@ -11,6 +11,20 @@ export const getTodo = async (req, res, next) => {
   }
 };
 
+export const getDateTodo = async (req, res, next) => {
+  const { date } = req.params;
+  const user = await User.findOne({ _id: req.user.id });
+  const toDos = user.toDo;
+  let responseTodo = [];
+  toDos.forEach((element) => {
+    if (element.date === date) {
+      responseTodo.push(element);
+    }
+  });
+  console.log(responseTodo);
+  res.status(200).json({ success: true, toDos: responseTodo });
+};
+
 export const postTodo = async (req, res, next) => {
   try {
     if (!req.user) return next(createError(401, "You are not authenticated."));
@@ -40,7 +54,7 @@ export const deleteTodo = async (req, res, next) => {
       { _id: req.user.id },
       { $pull: { toDo: { _id: req.body.id } } }
     );
-    const user = await User.findOne({_id: req.user.id});
+    const user = await User.findOne({ _id: req.user.id });
     res.status(200).json({ success: true, toDos: user.toDo });
   } catch (err) {
     next(err);
@@ -65,3 +79,9 @@ export const postEditProfile = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getSchedule = (req, res, next) => {};
+
+export const postSchedule = (req, res, next) => {};
+
+export const deleteSchedule = (req, res, next) => {};
