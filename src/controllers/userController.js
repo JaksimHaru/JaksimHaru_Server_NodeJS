@@ -12,17 +12,39 @@ export const getTodo = async (req, res, next) => {
 };
 
 export const getDateTodo = async (req, res, next) => {
-  const { date } = req.params;
-  const user = await User.findOne({ _id: req.user.id });
-  const toDos = user.toDo;
-  let responseTodo = [];
-  toDos.forEach((element) => {
-    if (element.date === date) {
-      responseTodo.push(element);
-    }
-  });
-  console.log(responseTodo);
-  res.status(200).json({ success: true, toDos: responseTodo });
+  try {
+    const { date } = req.params;
+    const user = await User.findOne({ _id: req.user.id });
+    const toDos = user.toDo;
+    let responseTodo = [];
+    toDos.forEach((element) => {
+      if (element.date === date) {
+        responseTodo.push(element);
+      }
+    });
+    console.log(responseTodo);
+    res.status(200).json({ success: true, toDos: responseTodo });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const putTodo = async (req, res, next) => {
+  try {
+    const { isChecked } = req.body;
+    await User.findOneAndUpdate(
+      { _id: req.user.id, "toDo._id": req.body.id },
+      {
+        $set: {
+          "toDo.$.isChecked": !JSON.parse(isChecked),
+        },
+      }
+    );
+    const user = await User.findOne({ _id: req.user.id });
+    res.status(200).json({ success: true, toDos: user.toDo });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const postTodo = async (req, res, next) => {

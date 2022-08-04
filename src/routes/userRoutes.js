@@ -5,6 +5,7 @@ import {
   getDateTodo,
   postTodo,
   deleteTodo,
+  putTodo,
   getSchedule,
   postSchedule,
   deleteSchedule,
@@ -19,6 +20,7 @@ userRoutes
   .all(verifyToken)
   .get(getTodo)
   .post(postTodo)
+  .put(putTodo)
   .delete(deleteTodo);
 
 userRoutes.get("/todo/:date", verifyToken, getDateTodo);
