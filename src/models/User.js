@@ -16,6 +16,13 @@ const UserSchema = new mongoose.Schema(
         isChecked: { type: Boolean, default: false },
       },
     ],
+    schedule: [
+      {
+        date: { type: String },
+        content: { type: String, trim: true },
+        isChecked: { type: Boolean, default: false },
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -102,8 +102,29 @@ export const postEditProfile = async (req, res, next) => {
   }
 };
 
-export const getSchedule = (req, res, next) => {};
+export const getSchedule = async (req, res, next) => {
+  try {
+    const { date } = req.params;
+    const user = await User.findOne({ _id: req.user.id });
+    const schedules = user.schedule;
+    let responseScheduels = [];
+    schedules.forEach((element) => {
+      if (element.date === date) {
+        responseScheduels.push(element);
+      }
+    });
+    console.log(responseScheduels);
+    res.status(200).json({ success: true, schedules: responseScheduels });
+  } catch (err) {
+    next(err);
+  }
+};
 
-export const postSchedule = (req, res, next) => {};
+export const postSchedule = (req, res, next) => {
+  try {
+  } catch (err) {
+    next(err);
+  }
+};
 
 export const deleteSchedule = (req, res, next) => {};

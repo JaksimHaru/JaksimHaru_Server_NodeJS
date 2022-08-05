@@ -26,7 +26,7 @@ userRoutes
 userRoutes.get("/todo/:date", verifyToken, getDateTodo);
 
 userRoutes
-  .route("/schedule")
+  .route("/schedule/:date")
   .all(verifyToken)
   .get(getSchedule)
   .post(postSchedule)
