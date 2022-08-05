@@ -518,6 +518,174 @@
         }
       }
     },
+    "/users/schedule/:date": {
+      "get": {
+        "summary": "AccessToken에 담긴 유저정보로 Schedule 날짜별 조회",
+        "tags": ["User API"],
+        "description": "유저 date Schedule 목록 반환",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "schedules": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ScheduleObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      },
+      "post": {
+        "summary": "AccessToken에 담긴 유저정보로 Schedule 날짜별 추가",
+        "tags": ["User API"],
+        "description": "유저 date Schedule 추가",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Post data",
+            "in": "body",
+            "description": "date로 조회한 Schedule에 한개 저장",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "isChecked": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "schedules": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ScheduleObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      },
+      "delete": {
+        "summary": "AccessToken에 담긴 유저정보로 date Schedule 삭제",
+        "tags": ["User API"],
+        "description": "유저 date Schedule 삭제",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Delete data",
+            "in": "body",
+            "description": "AccessToken을 가진 유저의 data Schedule 삭제",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schedule 한개 삭제",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "schedules": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ScheduleObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      },
+      "put": {
+        "summary": "AccessToken에 담긴 유저정보로 Schedule isChecked 수정",
+        "tags": ["User API"],
+        "description": "유저 Schedule isChecked 수정",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "modify isChecked",
+            "in": "body",
+            "description": "AccessToken을 가진 유저의 data Schedule 삭제",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "isChecked": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schedule 수정 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "schedules": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ScheduleObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      }
+    },
     "/users/edit-profile": {
       "post": {
         "summary": "회원가입",
@@ -600,6 +768,22 @@
       }
     },
     "TodoObject": {
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "isChecked": {
+          "type": "boolean"
+        },
+        "_id": {
+          "type": "string"
+        }
+      }
+    },
+    "ScheduleObject": {
       "properties": {
         "date": {
           "type": "string"
