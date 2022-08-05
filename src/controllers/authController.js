@@ -129,7 +129,7 @@ export const loginWithKakao = async (req, res, next) => {
     const config = {
       grant_type: "authorization_code",
       client_id: process.env.KAKAO_KEY,
-      redirect_uri: "https://jaksim.netlify.app/join/oauth/kakao",
+      redirect_uri: "https://jaksimharu.netlify.app/join/oauth/kakao",
       code: req.body.code,
       client_secret: process.env.KAKAO_SECRET,
     };
