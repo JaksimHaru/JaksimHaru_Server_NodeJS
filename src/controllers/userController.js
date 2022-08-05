@@ -50,13 +50,12 @@ export const putTodo = async (req, res, next) => {
 export const postTodo = async (req, res, next) => {
   try {
     if (!req.user) return next(createError(401, "You are not authenticated."));
-    const date = req.body.date.split("T")[0];
     const user = await User.findOneAndUpdate(
       { _id: req.user.id },
       {
         $push: {
           toDo: {
-            date,
+            date : req.body.date,
             content: req.body.content,
             isChecked: req.body.isChecked,
           },
