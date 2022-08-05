@@ -16,7 +16,7 @@ const logger = morgan("dev");
 app.use(logger);
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://jaksimharu.netlify.app",
     credentials: true,
     methods: ["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
   })
