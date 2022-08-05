@@ -41,6 +41,7 @@ export const putTodo = async (req, res, next) => {
       }
     );
     const user = await User.findOne({ _id: req.user.id });
+    console.log(user);
     res.status(200).json({ success: true, toDos: user.toDo });
   } catch (err) {
     next(err);
@@ -50,19 +51,20 @@ export const putTodo = async (req, res, next) => {
 export const postTodo = async (req, res, next) => {
   try {
     if (!req.user) return next(createError(401, "You are not authenticated."));
-    const user = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { _id: req.user.id },
       {
         $push: {
           toDo: {
-            date : req.body.date,
+            date: req.body.date,
             content: req.body.content,
             isChecked: req.body.isChecked,
           },
         },
       }
     );
-    console.log(req.body);
+    const user = await User.findOne({ _id: req.user.id });
+    console.log(user);
     res.status(200).json({ success: true, toDos: user.toDo });
   } catch (err) {
     next(err);
@@ -77,6 +79,7 @@ export const deleteTodo = async (req, res, next) => {
       { $pull: { toDo: { _id: req.body.id } } }
     );
     const user = await User.findOne({ _id: req.user.id });
+    console.log(user);
     res.status(200).json({ success: true, toDos: user.toDo });
   } catch (err) {
     next(err);
@@ -120,11 +123,40 @@ export const getSchedule = async (req, res, next) => {
   }
 };
 
-export const postSchedule = (req, res, next) => {
+export const postSchedule = async (req, res, next) => {
   try {
+    await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $push: {
+          schedule: {
+            date: req.body.date,
+            content: req.body.content,
+            isChecked: req.body.isChecked,
+          },
+        },
+      }
+    );
+    const user = await User.findOne({ _id: req.user.id });
+    console.log(user);
+    res.status(200).json({ success: true, schedules: user.schedule });
   } catch (err) {
     next(err);
   }
 };
 
-export const deleteSchedule = (req, res, next) => {};
+export const deleteSchedule = async (req, res, next) => {
+  try {
+    await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $pull: { schedule: { _id: req.body.id } },
+      }
+    );
+    const user = await User.findOne({ _id: req.user.id });
+    console.log(user);
+    res.status(200).json({ success: true, schedules: user.schedule });
+  } catch (err) {
+    next(err);
+  }
+};
