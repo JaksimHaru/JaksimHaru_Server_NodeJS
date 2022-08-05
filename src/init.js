@@ -2,7 +2,7 @@ import "dotenv/config";
 import "./db";
 import app from "./server";
 
-const PORT = 8800;
+const PORT = 443;
 
 const handleListener = () => {
   console.log(`✅ Server listenting on port http://localhost:${PORT} 🚀`);
