@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import globalRoutes from "./routes/globalRoutes";
 import cookieParser from "cookie-parser";
 import swaggerUI from "swagger-ui-express";
 import swaggerDocs from "./swagger.json";
@@ -33,9 +34,7 @@ app.use(function (req, res, next) {
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/health", (req, res) => {
-  res.status(200);
-});
+app.use("/", globalRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
