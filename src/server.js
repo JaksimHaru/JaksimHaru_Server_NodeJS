@@ -33,8 +33,10 @@ app.use(function (req, res, next) {
 app.use(cookieParser());
 app.use(express.json());
 
+app.use("/health", (req, res) => {
+  res.status(200);
+});
 app.use("/api/auth", authRoutes);
-
 app.use("/api/users", userRoutes);
 
 app.use((err, req, res, next) => {
