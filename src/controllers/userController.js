@@ -1,3 +1,4 @@
+import { trusted } from "mongoose";
 import { createError } from "../error";
 import User from "../models/User";
 
@@ -22,7 +23,6 @@ export const getDateTodo = async (req, res, next) => {
         responseTodo.push(element);
       }
     });
-    console.log(responseTodo);
     res.status(200).json({ success: true, toDos: responseTodo });
   } catch (err) {
     next(err);
@@ -32,16 +32,15 @@ export const getDateTodo = async (req, res, next) => {
 export const putTodo = async (req, res, next) => {
   try {
     const { isChecked } = req.body;
-    await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { _id: req.user.id, "toDo._id": req.body.id },
       {
         $set: {
           "toDo.$.isChecked": !JSON.parse(isChecked),
         },
-      }
+      },
+      { new: true }
     );
-    const user = await User.findOne({ _id: req.user.id });
-    console.log(user);
     res.status(200).json({ success: true, toDos: user.toDo });
   } catch (err) {
     next(err);
@@ -51,7 +50,7 @@ export const putTodo = async (req, res, next) => {
 export const postTodo = async (req, res, next) => {
   try {
     if (!req.user) return next(createError(401, "You are not authenticated."));
-    await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { _id: req.user.id },
       {
         $push: {
@@ -61,10 +60,9 @@ export const postTodo = async (req, res, next) => {
             isChecked: req.body.isChecked,
           },
         },
-      }
+      },
+      { new: true }
     );
-    const user = await User.findOne({ _id: req.user.id });
-    console.log(user);
     res.status(200).json({ success: true, toDos: user.toDo });
   } catch (err) {
     next(err);
@@ -74,12 +72,11 @@ export const postTodo = async (req, res, next) => {
 export const deleteTodo = async (req, res, next) => {
   try {
     if (!req.user) return next(createError(401, "You are not authenticated."));
-    await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { _id: req.user.id },
-      { $pull: { toDo: { _id: req.body.id } } }
+      { $pull: { toDo: { _id: req.body.id } } },
+      { new: true }
     );
-    const user = await User.findOne({ _id: req.user.id });
-    console.log(user);
     res.status(200).json({ success: true, toDos: user.toDo });
   } catch (err) {
     next(err);
@@ -116,7 +113,6 @@ export const getSchedule = async (req, res, next) => {
         responseScheduels.push(element);
       }
     });
-    console.log(responseScheduels);
     res.status(200).json({ success: true, schedules: responseScheduels });
   } catch (err) {
     next(err);
@@ -125,7 +121,7 @@ export const getSchedule = async (req, res, next) => {
 
 export const postSchedule = async (req, res, next) => {
   try {
-    await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { _id: req.user.id },
       {
         $push: {
@@ -138,8 +134,6 @@ export const postSchedule = async (req, res, next) => {
         },
       }
     );
-    const user = await User.findOne({ _id: req.user.id });
-    console.log(user);
     res.status(200).json({ success: true, schedules: user.schedule });
   } catch (err) {
     next(err);
@@ -148,14 +142,12 @@ export const postSchedule = async (req, res, next) => {
 
 export const deleteSchedule = async (req, res, next) => {
   try {
-    await User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       { _id: req.user.id },
       {
         $pull: { schedule: { _id: req.body.id } },
       }
     );
-    const user = await User.findOne({ _id: req.user.id });
-    console.log(user);
     res.status(200).json({ success: true, schedules: user.schedule });
   } catch (err) {
     next(err);

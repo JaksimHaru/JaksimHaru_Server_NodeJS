@@ -35,20 +35,22 @@ export const getPostingById = async (req, res, next) => {
 
 export const modifyPosting = async (req, res, next) => {
   try {
-    if (!file) req.file = "";
+    if (!req.file) req.file = "";
     const {
       body: { title, desc, category },
       file,
     } = req;
-    await Community.findByIdAndUpdate(
+    const posting = await Community.findOneAndUpdate(
       { _id: req.params.id },
       {
         title,
         desc,
         image: file.location,
         category,
-      }
+      },
+      { new: true }
     );
+    res.status(200).json({ success: true, posting });
   } catch (err) {
     next(err);
   }
@@ -58,8 +60,8 @@ export const getPostingsByCategory = async (req, res, next) => {
   try {
     const { category } = req.query;
     let responsePostings = [];
-    const response = Community.find({ category });
-    console.log(response);
+    responsePostings = await Community.find({ category });
+    res.status(200).json({ success: true, responsePostings });
   } catch (err) {
     next(err);
   }

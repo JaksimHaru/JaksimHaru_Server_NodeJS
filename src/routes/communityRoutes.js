@@ -17,12 +17,12 @@ communityRoutes.post(
   postPosting
 );
 
+communityRoutes.get("/category", verifyToken, getPostingsByCategory);
+
 communityRoutes
   .route("/:id")
   .all(verifyToken)
   .get(getPostingById)
-  .post(modifyPosting);
-
-communityRoutes.get("/category", verifyToken, getPostingsByCategory);
+  .post(postingImageUpload.single("image"), modifyPosting);
 
 export default communityRoutes;

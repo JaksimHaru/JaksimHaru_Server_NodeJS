@@ -722,6 +722,167 @@
           }
         }
       }
+    },
+    "/community/upload": {
+      "post": {
+        "summary": "포스트 업로드",
+        "tags": ["Community API"],
+        "description": "포스트 업로드",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "form-data 사진 업로드 ",
+            "type": "file"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "description": "글 제목",
+            "type": "string"
+          },
+          {
+            "name": "desc",
+            "in": "formData",
+            "description": "글 내용",
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "in": "formData",
+            "description": "카테고리",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "posting": {
+                  "$ref": "#/definitions/PostingObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      }
+    },
+    "/comunity/:id": {
+      "get": {
+        "summary": "id의 글 가져오기",
+        "tags": ["Community API"],
+        "description": "id의 글 가져오기",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "posting": {
+                  "$ref": "#/definitions/PostingObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      },
+      "post": {
+        "summary": "id의 글 수정",
+        "tags": ["Community API"],
+        "description": "id의 글 수정",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "form-data 사진 업로드 ",
+            "type": "file"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "description": "글 제목",
+            "type": "string"
+          },
+          {
+            "name": "desc",
+            "in": "formData",
+            "description": "글 내용",
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "in": "formData",
+            "description": "카테고리",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "posting": {
+                  "$ref": "#/definitions/PostingObject"
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "다시 로그인 필요"
+        }
+      }
+    },
+    "/community/category": {
+      "get": {
+        "summary": "/community/category?category={게시판종류} query 로 글 가져오기",
+        "tags": ["Community API"],
+        "description": "{category}의 글들만 불러오기",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "posting": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/PostingObject"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      }
     }
   },
 
@@ -796,6 +957,28 @@
         },
         "isChecked": {
           "type": "boolean"
+        },
+        "_id": {
+          "type": "string"
+        }
+      }
+    },
+    "PostingObject": {
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
         },
         "_id": {
           "type": "string"
