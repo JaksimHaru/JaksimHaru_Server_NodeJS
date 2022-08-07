@@ -53,3 +53,14 @@ export const modifyPosting = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getPostingsByCategory = async (req, res, next) => {
+  try {
+    const { category } = req.query;
+    let responsePostings = [];
+    const response = Community.find({ category });
+    console.log(response);
+  } catch (err) {
+    next(err);
+  }
+};

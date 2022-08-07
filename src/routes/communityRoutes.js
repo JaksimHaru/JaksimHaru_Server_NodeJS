@@ -3,6 +3,7 @@ import {
   getPostingById,
   postPosting,
   modifyPosting,
+  getPostingsByCategory,
 } from "../controllers/communityController";
 import { postingImageUpload } from "../uploadFiles";
 import { verifyToken } from "../verifyToken";
@@ -21,5 +22,7 @@ communityRoutes
   .all(verifyToken)
   .get(getPostingById)
   .post(modifyPosting);
+
+communityRoutes.get("/category", verifyToken, getPostingsByCategory);
 
 export default communityRoutes;
