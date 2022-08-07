@@ -8,7 +8,7 @@ const s3 = new aws.S3({
   region: "ap-northeast-2",
 });
 
-const s3ImageUploader = multerS3({
+const s3ProfileImageUploader = multerS3({
   s3: s3,
   bucket: "jaksimharu/images",
   contentType: multerS3.AUTO_CONTENT_TYPE,
@@ -18,6 +18,20 @@ const s3ImageUploader = multerS3({
   acl: "public-read",
 });
 
-export const imageUpload = multer({
-  storage: s3ImageUploader,
+const s3PostingImageUploader = multerS3({
+  s3: s3,
+  bucket: "jaksimharu/posting",
+  contentType: multerS3.AUTO_CONTENT_TYPE,
+  key: function (req, file, cb) {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+  acl: "public-read",
+});
+
+export const profileImageUpload = multer({
+  storage: s3ProfileImageUploader,
+});
+
+export const postingImageUpload = multer({
+  storage: s3PostingImageUploader,
 });
