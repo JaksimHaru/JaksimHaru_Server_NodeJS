@@ -130,7 +130,7 @@ export const postSchedule = async (req, res, next) => {
       {
         $push: {
           schedule: {
-            date: req.body.date,
+            date: req.params.date,
             time: req.body.time,
             content: req.body.content,
             isChecked: req.body.isChecked,
