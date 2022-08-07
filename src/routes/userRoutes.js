@@ -10,7 +10,7 @@ import {
   postSchedule,
   deleteSchedule,
 } from "../controllers/userController";
-import { imageUpload } from "../uploadFiles";
+import { profileImageUpload } from "../uploadFiles";
 import { verifyToken } from "../verifyToken";
 
 const userRoutes = express.Router();
@@ -35,7 +35,7 @@ userRoutes
 userRoutes.post(
   "/edit-profile",
   verifyToken,
-  imageUpload.single("image"),
+  profileImageUpload.single("image"),
   postEditProfile
 );
 

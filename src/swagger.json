@@ -563,6 +563,9 @@
                 "date": {
                   "type": "string"
                 },
+                "time": {
+                  "type": "string"
+                },
                 "content": {
                   "type": "string"
                 },
@@ -786,6 +789,9 @@
     "ScheduleObject": {
       "properties": {
         "date": {
+          "type": "string"
+        },
+        "time": {
           "type": "string"
         },
         "content": {

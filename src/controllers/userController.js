@@ -91,7 +91,7 @@ export const getEditProfile = async (req, res, next) => {};
 export const postEditProfile = async (req, res, next) => {
   try {
     const { file } = req;
-    if (!file) return next(createError(404, "File not found"));
+    if (!file) return next(createError(404, "File is not found"));
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
       {
@@ -131,6 +131,7 @@ export const postSchedule = async (req, res, next) => {
         $push: {
           schedule: {
             date: req.body.date,
+            time: req.body.time,
             content: req.body.content,
             isChecked: req.body.isChecked,
           },
