@@ -488,7 +488,7 @@
         }
       }
     },
-    "/users/todo/:date": {
+    "/users/todo/{date}": {
       "get": {
         "summary": "AccessToken에 담긴 유저정보로 Todo 날짜별 조회",
         "tags": ["Todo API"],
@@ -518,7 +518,7 @@
         }
       }
     },
-    "/users/schedule/:date": {
+    "/users/schedule/{date}": {
       "get": {
         "summary": "AccessToken에 담긴 유저정보로 Schedule 날짜별 조회",
         "tags": ["Schedule API"],
@@ -776,7 +776,7 @@
         }
       }
     },
-    "/comunity/:id": {
+    "/comunity/{id}": {
       "get": {
         "summary": "id의 글 가져오기",
         "tags": ["Community API"],
@@ -883,6 +883,48 @@
           }
         }
       }
+    },
+    "/community/{id}/comment": {
+      "post": {
+        "summary": "id의 글에 댓글 추가",
+        "tags": ["Community API"],
+        "description": "{id}를 가진 posting에 댓글 추가",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Post Comment",
+            "in": "body",
+            "description": "Post Comment ",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "desc": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "posting": {
+                  "$ref": "#/definitions/PostingObject"
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "다시 로그인 필요"
+        }
+      }
     }
   },
 
@@ -974,10 +1016,32 @@
         "image": {
           "type": "string"
         },
+        "category": {
+          "type": "string"
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CommentObject"
+          }
+        },
+        "userId": {
+          "$ref": "#/definitions/User"
+        },
+        "_id": {
+          "type": "string"
+        }
+      }
+    },
+    "CommentObject": {
+      "properties": {
         "userId": {
           "type": "string"
         },
-        "category": {
+        "postingId": {
+          "type": "string"
+        },
+        "desc": {
           "type": "string"
         },
         "_id": {

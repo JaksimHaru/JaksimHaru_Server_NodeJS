@@ -5,8 +5,15 @@ const communitySchema = mongoose.Schema(
     title: { type: String, required: true },
     desc: { type: String, required: true },
     image: { type: String, default: "" },
-    userId: { type: String, required: true },
     category: { type: String, required: true },
+    comments: [
+      { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Comment" },
+    ],
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );

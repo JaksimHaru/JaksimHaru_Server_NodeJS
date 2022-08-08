@@ -4,6 +4,7 @@ import {
   postPosting,
   modifyPosting,
   getPostingsByCategory,
+  postComment,
 } from "../controllers/communityController";
 import { postingImageUpload } from "../uploadFiles";
 import { verifyToken } from "../verifyToken";
@@ -24,5 +25,7 @@ communityRoutes
   .all(verifyToken)
   .get(getPostingById)
   .post(postingImageUpload.single("image"), modifyPosting);
+
+communityRoutes.post("/:id/comment", verifyToken, postComment);
 
 export default communityRoutes;
