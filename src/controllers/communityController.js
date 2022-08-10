@@ -4,7 +4,7 @@ import Comment from "../models/Comment";
 
 export const postPosting = async (req, res, next) => {
   try {
-    if (!file) req.file = "";
+    if (!req.file) req.file = "";
     const {
       body: { title, desc, category },
       user: { id },
@@ -87,7 +87,9 @@ export const postComment = async (req, res, next) => {
         },
       },
       { new: true }
-    ).populate("comments");
+    )
+      .populate("comments")
+      .populate("userId");
     res.status(200).json({ success: true, posting });
   } catch (err) {
     next(err);
