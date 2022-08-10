@@ -869,7 +869,7 @@
                 "success": {
                   "type": "boolean"
                 },
-                "posting": {
+                "postings": {
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/PostingObject"
