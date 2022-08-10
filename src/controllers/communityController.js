@@ -97,8 +97,13 @@ export const postComment = async (req, res, next) => {
       },
       { new: true }
     )
-      .populate("comments")
-      .populate("comments.userId")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "userId",
+          model: "User",
+        },
+      })
       .populate("userId");
     res.status(200).json({ success: true, posting });
   } catch (err) {
