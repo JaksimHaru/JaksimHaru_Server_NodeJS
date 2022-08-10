@@ -124,7 +124,7 @@ export const signin = async (req, res, next) => {
         secure: true,
         sameSite: strict,
       })
-      .json({ refreshToken, accessToken, responseUser });
+      .json({ refreshToken, accessToken });
   } catch (err) {
     next(err);
   }
