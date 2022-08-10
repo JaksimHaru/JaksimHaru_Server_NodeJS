@@ -80,6 +80,7 @@ export const getPostingsByCategory = async (req, res, next) => {
 
 export const postComment = async (req, res, next) => {
   try {
+    console.log(req.body.desc)
     const comment = await Comment.create({
       userId: req.user.id,
       postingId: req.params.id,
