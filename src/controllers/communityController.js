@@ -71,7 +71,7 @@ export const getPostingsByCategory = async (req, res, next) => {
   try {
     const { category } = req.query;
     let postings = [];
-    postings = await Community.find({ category }).populate(userId);
+    postings = await Community.find({ category }).populate("userId");
     res.status(200).json({ success: true, postings });
   } catch (err) {
     next(err);
