@@ -5,19 +5,20 @@ import Comment from "../models/Comment";
 export const postPosting = async (req, res, next) => {
   try {
     if (!req.file) req.file = "";
+    console.log(req.file);
     const {
       body: { title, desc, category },
       user: { id },
       file,
     } = req;
-    const post = await Community.create({
+    const posting = await Community.create({
       title,
       desc,
       image: file.location,
       category,
       userId: id,
     });
-    res.status(200).json({ success: true, post });
+    res.status(200).json({ success: true, posting });
   } catch (err) {
     next(err);
   }
@@ -62,9 +63,9 @@ export const modifyPosting = async (req, res, next) => {
 export const getPostingsByCategory = async (req, res, next) => {
   try {
     const { category } = req.query;
-    let responsePostings = [];
-    responsePostings = await Community.find({ category });
-    res.status(200).json({ success: true, responsePostings });
+    let postings = [];
+    postings = await Community.find({ category });
+    res.status(200).json({ success: true, postings });
   } catch (err) {
     next(err);
   }
