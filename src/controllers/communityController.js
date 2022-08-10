@@ -5,7 +5,6 @@ import Comment from "../models/Comment";
 export const postPosting = async (req, res, next) => {
   try {
     if (!req.file) req.file = "";
-    console.log(req.file);
     const {
       body: { title, desc, category },
       user: { id },
@@ -37,7 +36,7 @@ export const getPostingById = async (req, res, next) => {
   }
 };
 
-export const modifyPosting = async (req, res, next) => {
+export const editPosting = async (req, res, next) => {
   try {
     if (!req.file) req.file = "";
     const {
@@ -59,6 +58,14 @@ export const modifyPosting = async (req, res, next) => {
     next(err);
   }
 };
+
+export const deletePosting = async(req, res, next) => {
+  try{
+    
+  }catch(err){
+    next(err);
+  }
+}
 
 export const getPostingsByCategory = async (req, res, next) => {
   try {

@@ -117,7 +117,14 @@ export const signin = async (req, res, next) => {
       isAdmin: user.isAdmin,
       img: user.img,
     });
-    res.status(200).json({ refreshToken, accessToken, responseUser });
+    res
+      .status(200)
+      .cookie("refresh_token", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: strict,
+      })
+      .json({ refreshToken, accessToken, responseUser });
   } catch (err) {
     next(err);
   }
