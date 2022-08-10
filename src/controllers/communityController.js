@@ -25,7 +25,7 @@ export const postPosting = async (req, res, next) => {
 
 export const getPostingById = async (req, res, next) => {
   try {
-    console.log(req.cookies)
+    console.log(req.cookies);
     const { id } = req.params;
     const posting = await Community.findById(id)
       .populate("comments")
@@ -60,19 +60,18 @@ export const editPosting = async (req, res, next) => {
   }
 };
 
-export const deletePosting = async(req, res, next) => {
-  try{
-
-  }catch(err){
+export const deletePosting = async (req, res, next) => {
+  try {
+  } catch (err) {
     next(err);
   }
-}
+};
 
 export const getPostingsByCategory = async (req, res, next) => {
   try {
     const { category } = req.query;
     let postings = [];
-    postings = await Community.find({ category });
+    postings = await Community.find({ category }).populate(userId);
     res.status(200).json({ success: true, postings });
   } catch (err) {
     next(err);
