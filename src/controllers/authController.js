@@ -123,7 +123,7 @@ export const signin = async (req, res, next) => {
         httpOnly: true,
         secure: true,
       })
-      .json({ refreshToken, accessToken });
+      .json({ accessToken, responseUser });
   } catch (err) {
     next(err);
   }
