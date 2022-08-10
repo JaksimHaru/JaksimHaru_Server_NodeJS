@@ -80,7 +80,7 @@ export const getPostingsByCategory = async (req, res, next) => {
 
 export const postComment = async (req, res, next) => {
   try {
-    console.log(req.body.desc)
+    console.log(req.bod);
     const comment = await Comment.create({
       userId: req.user.id,
       postingId: req.params.id,
@@ -98,6 +98,7 @@ export const postComment = async (req, res, next) => {
       { new: true }
     )
       .populate("comments")
+      .populate("comments.userId")
       .populate("userId");
     res.status(200).json({ success: true, posting });
   } catch (err) {
