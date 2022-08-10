@@ -122,7 +122,6 @@ export const signin = async (req, res, next) => {
       .cookie("refresh_token", refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: strict,
       })
       .json({ refreshToken, accessToken });
   } catch (err) {
