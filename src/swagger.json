@@ -852,6 +852,28 @@
         "401": {
           "description": "다시 로그인 필요"
         }
+      },
+      "delete": {
+        "summary": "id 게시글 삭제",
+        "tags": ["Community API"],
+        "description": "게시글 삭제",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "게시글 삭제 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
       }
     },
     "/community/category": {
