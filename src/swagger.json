@@ -925,6 +925,33 @@
           "description": "다시 로그인 필요"
         }
       }
+    },
+    "/community/comment/{id}": {
+      "get": {
+        "summary": "id의 댓글 가져오기",
+        "tags": ["Community API"],
+        "description": "id의 댓글 가져오기",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "comment": {
+                  "$ref": "#/definitions/CommentObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      }
     }
   },
 
