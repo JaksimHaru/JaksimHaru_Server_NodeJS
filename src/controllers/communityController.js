@@ -75,6 +75,9 @@ export const editPosting = async (req, res, next) => {
 
 export const deletePosting = async (req, res, next) => {
   try {
+    const { id } = req.params;
+    await Community.findByIdAndDelete({ _id: id });
+    res.status(200).json({ success: true });
   } catch (err) {
     next(err);
   }

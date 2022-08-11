@@ -14,6 +14,10 @@ const communitySchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
+    anonymous: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
