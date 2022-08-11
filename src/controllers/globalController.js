@@ -1,18 +1,6 @@
-import jwt from "jsonwebtoken";
-
-export const test = (req, res, next) => {
+export const health = (req, res, next) => {
   try {
-    const refreshToken = jwt.sign({}, process.env.JWT, {
-      algorithm: "HS256",
-      expiresIn: "14d",
-    });
-    res
-      .status(200)
-      .cookie("refresh_token", refreshToken, {
-        httpOnly: true,
-        secure: true,
-      })
-      .json({ success: true });
+    res.status(200).json({ success: true });
   } catch (err) {
     next(err);
   }
