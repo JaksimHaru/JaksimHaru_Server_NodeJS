@@ -122,6 +122,7 @@ export const signin = async (req, res, next) => {
       .cookie("refresh_token", refreshToken, {
         httpOnly: true,
         secure: true,
+        sameSite: "None",
       })
       .json({ accessToken, responseUser });
   } catch (err) {
