@@ -25,10 +25,15 @@ export const postPosting = async (req, res, next) => {
 
 export const getPostingById = async (req, res, next) => {
   try {
-    console.log(req.cookies);
     const { id } = req.params;
     const posting = await Community.findById(id)
-      .populate("comments")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "userId",
+          model: "User",
+        },
+      })
       .populate("userId");
     if (!posting) return next(createError(404, "Posting is not found"));
     res.status(200).json({ success: true, posting });
@@ -53,7 +58,15 @@ export const editPosting = async (req, res, next) => {
         category,
       },
       { new: true }
-    );
+    )
+      .populate({
+        path: "comments",
+        populate: {
+          path: "userId",
+          model: "User",
+        },
+      })
+      .populate("userId");
     res.status(200).json({ success: true, posting });
   } catch (err) {
     next(err);
@@ -71,7 +84,15 @@ export const getPostingsByCategory = async (req, res, next) => {
   try {
     const { category } = req.query;
     let postings = [];
-    postings = await Community.find({ category }).populate("userId");
+    postings = await Community.find({ category })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "userId",
+          model: "User",
+        },
+      })
+      .populate("userId");
     res.status(200).json({ success: true, postings });
   } catch (err) {
     next(err);
@@ -80,7 +101,6 @@ export const getPostingsByCategory = async (req, res, next) => {
 
 export const postComment = async (req, res, next) => {
   try {
-    console.log(req.bod);
     const comment = await Comment.create({
       userId: req.user.id,
       postingId: req.params.id,
@@ -113,7 +133,9 @@ export const postComment = async (req, res, next) => {
 
 export const getComment = async (req, res, next) => {
   try {
-    const comment = await Comment.findOne({ _id: req.params.id }).populate("userId");
+    const comment = await Comment.findOne({ _id: req.params.id }).populate(
+      "userId"
+    );
     if (!comment) return next(createError(400, "Comment is not found"));
     res.status(200).json({ success: true, comment });
   } catch (err) {
