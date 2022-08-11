@@ -113,7 +113,7 @@ export const postComment = async (req, res, next) => {
 
 export const getComment = async (req, res, next) => {
   try {
-    const comment = await Comment.findOne({ _id: req.params.id });
+    const comment = await Comment.findOne({ _id: req.params.id }).populate("userId");
     if (!comment) return next(createError(400, "Comment is not found"));
     res.status(200).json({ success: true, comment });
   } catch (err) {
