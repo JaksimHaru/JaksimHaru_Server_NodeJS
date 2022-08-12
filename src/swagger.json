@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "jaksimharu.shop:8800",
+  "host": "https://jaksimharu.shop",
   "basePath": "/api",
   "tags": [
     {
@@ -973,6 +973,28 @@
             "description": "다시 로그인 필요"
           }
         }
+      },
+      "delete": {
+        "summary": "id 댓글 삭제",
+        "tags": ["Community API"],
+        "description": "댓글 삭제",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "댓글 삭제 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
       }
     }
   },
@@ -1076,6 +1098,9 @@
         },
         "userId": {
           "$ref": "#/definitions/User"
+        },
+        "anonymous": {
+          "type": "boolean"
         },
         "_id": {
           "type": "string"

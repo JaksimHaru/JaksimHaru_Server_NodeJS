@@ -1,6 +1,7 @@
 import { createError } from "../error";
 import Community from "../models/Community";
 import Comment from "../models/Comment";
+import mongoose from "mongoose";
 
 export const postPosting = async (req, res, next) => {
   try {
@@ -44,12 +45,16 @@ export const getPostingById = async (req, res, next) => {
 
 export const editPosting = async (req, res, next) => {
   try {
+    const posting = await Community.findById({ _id: req.params.id });
+    if (req.user.id !== posting.userId) {
+      return next(createError(401, "글의 주인이 아닙니다."));
+    }
     if (!req.file) req.file = "";
     const {
       body: { title, desc, category },
       file,
     } = req;
-    const posting = await Community.findOneAndUpdate(
+    const responsePosting = await Community.findOneAndUpdate(
       { _id: req.params.id },
       {
         title,
@@ -67,7 +72,7 @@ export const editPosting = async (req, res, next) => {
         },
       })
       .populate("userId");
-    res.status(200).json({ success: true, posting });
+    res.status(200).json({ success: true, posting: responsePosting });
   } catch (err) {
     next(err);
   }
@@ -75,8 +80,11 @@ export const editPosting = async (req, res, next) => {
 
 export const deletePosting = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    await Community.findByIdAndDelete({ _id: id });
+    const posting = await Community.findById({ _id: req.params.id });
+    if (req.user.id !== posting.userId) {
+      return next(createError(401, "게시글의 주인이 아닙니다."));
+    }
+    await Community.findByIdAndDelete({ _id: req.params.id });
     res.status(200).json({ success: true });
   } catch (err) {
     next(err);
@@ -141,6 +149,25 @@ export const getComment = async (req, res, next) => {
     );
     if (!comment) return next(createError(400, "Comment is not found"));
     res.status(200).json({ success: true, comment });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById({ _id: req.params.id });
+    if (req.user.id !== comment.userId) {
+      return next(createError(401, "댓글의 주인이 아닙니다."));
+    }
+    await Comment.findByIdAndDelete({ _id: req.params.id });
+    await Community.findByIdAndUpdate(
+      { _id: comment.postingId },
+      {
+        $pull: { comments: mongoose.Types.ObjectId(comment._id) },
+      }
+    );
+    res.status(200).json({ success: true });
   } catch (err) {
     next(err);
   }

@@ -7,6 +7,7 @@ import {
   postComment,
   deletePosting,
   getComment,
+  deleteComment,
 } from "../controllers/communityController";
 import { postingImageUpload } from "../uploadFiles";
 import { verifyToken } from "../verifyToken";
@@ -22,7 +23,7 @@ communityRoutes.post(
 
 communityRoutes.get("/category", verifyToken, getPostingsByCategory);
 
-communityRoutes.get("/comment/:id", verifyToken, getComment);
+communityRoutes.route("/comment/:id").all(verifyToken).get(getComment).delete(deleteComment);
 
 communityRoutes
   .route("/:id")
