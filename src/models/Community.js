@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 const communitySchema = mongoose.Schema(
   {
-    title: { type: String, required: true },
-    desc: { type: String, required: true },
+    title: { type: String, required: true, trim: true },
+    desc: { type: String, required: true, trim: true },
     image: { type: String, default: "" },
     category: { type: String, required: true },
     comments: [

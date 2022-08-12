@@ -7,7 +7,7 @@ export const postPosting = async (req, res, next) => {
   try {
     if (!req.file) req.file = "";
     const {
-      body: { title, desc, category },
+      body: { title, desc, category, anonymous },
       user: { id },
       file,
     } = req;
@@ -17,6 +17,7 @@ export const postPosting = async (req, res, next) => {
       image: file.location,
       category,
       userId: id,
+      anonymous,
     });
     res.status(200).json({ success: true, posting });
   } catch (err) {
@@ -46,7 +47,7 @@ export const getPostingById = async (req, res, next) => {
 export const editPosting = async (req, res, next) => {
   try {
     const posting = await Community.findById({ _id: req.params.id });
-    if (req.user.id !== posting.userId) {
+    if (req.user.id !== posting.userId.toString()) {
       return next(createError(401, "글의 주인이 아닙니다."));
     }
     if (!req.file) req.file = "";
@@ -81,7 +82,7 @@ export const editPosting = async (req, res, next) => {
 export const deletePosting = async (req, res, next) => {
   try {
     const posting = await Community.findById({ _id: req.params.id });
-    if (req.user.id !== posting.userId) {
+    if (req.user.id !== posting.userId.toString()) {
       return next(createError(401, "게시글의 주인이 아닙니다."));
     }
     await Community.findByIdAndDelete({ _id: req.params.id });
@@ -157,7 +158,7 @@ export const getComment = async (req, res, next) => {
 export const deleteComment = async (req, res, next) => {
   try {
     const comment = await Comment.findById({ _id: req.params.id });
-    if (req.user.id !== comment.userId) {
+    if (req.user.id !== comment.userId.toString()) {
       return next(createError(401, "댓글의 주인이 아닙니다."));
     }
     await Comment.findByIdAndDelete({ _id: req.params.id });
@@ -168,6 +169,20 @@ export const deleteComment = async (req, res, next) => {
       }
     );
     res.status(200).json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const editComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById({ _id: req.params.id });
+    if (req.user.id !== comment.userId.toString()) {
+      return next(createError(401, "댓글의 주인이 아닙니다."));
+    }
+    comment.desc = req.body.desc;
+    comment.save();
+    res.status(200).json({ success: true, comment });
   } catch (err) {
     next(err);
   }

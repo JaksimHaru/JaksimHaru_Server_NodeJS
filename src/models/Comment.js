@@ -12,7 +12,7 @@ const commentSchema = mongoose.Schema(
       required: true,
       ref: "Community",
     },
-    desc: { type: String, required: true },
+    desc: { type: String, required: true, trim: true },
   },
   { timestamps: true }
 );
