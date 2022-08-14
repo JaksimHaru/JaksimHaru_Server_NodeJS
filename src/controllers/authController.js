@@ -43,7 +43,14 @@ export const refreshToken = async (req, res, next) => {
         expiresIn: "1h",
       }
     );
-    res.status(200).json({ newRefreshToken, accessToken });
+    res
+      .status(200)
+      .cookie("refresh_token", newRefreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      })
+      .json(accessToken);
   } catch (err) {
     next(err);
   }
