@@ -5,13 +5,3 @@ export const health = (req, res, next) => {
     next(err);
   }
 };
-
-export const test = (req, res, next) => {
-  res
-    .status(200)
-    .cookie("refresh_token", {
-      secure: true,
-      sameSite: "None",
-    })
-    .json({ success: true });
-};
