@@ -28,8 +28,9 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", true);
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Set-Cookie"
+    "Origin, X-Requested-With, Content-Type, Accept"
   );
+  response.header("Access-Control-Expose-Headers", "Set-Cookie");
   next();
 });
 app.use(cookieParser());
