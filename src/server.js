@@ -30,7 +30,7 @@ app.use(function (req, res, next) {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
-  response.header("Access-Control-Expose-Headers", "Set-Cookie");
+  res.header("Access-Control-Expose-Headers", "Set-Cookie");
   next();
 });
 app.use(cookieParser());
