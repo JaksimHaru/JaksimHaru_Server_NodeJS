@@ -18,19 +18,18 @@ const logger = morgan("dev");
 app.use(logger);
 app.use(
   cors({
-    origin: "https://jaksimharu.netlify.app",
+    origin: true,
     credentials: true,
-    methods: ["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
   })
 );
 app.use(function (req, res, next) {
   res.header("Content-Type", "application/json;charset=UTF-8");
+  res.header("Access-Control-Allow-Origin", true);
   res.header("Access-Control-Allow-Credentials", true);
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
-  res.header("Access-Control-Expose-Headers", "Set-Cookie");
   next();
 });
 app.use(cookieParser());
