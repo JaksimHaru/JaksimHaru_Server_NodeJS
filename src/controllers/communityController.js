@@ -105,6 +105,10 @@ export const getPostingsByCategory = async (req, res, next) => {
         },
       })
       .populate("userId");
+    postings.sort(function (x, y) {
+      return y.createdAt - x.createdAt;
+    });
+    console.log(postings);
     res.status(200).json({ success: true, postings });
   } catch (err) {
     next(err);
