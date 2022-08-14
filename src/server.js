@@ -15,13 +15,22 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 const logger = morgan("dev");
 
+app.set("trust proxy", 1);
 app.use(logger);
 app.use(
   cors({
-    origin: true,
+    origin: "https://jaksimharu.netlify.app",
     credentials: true,
   })
 );
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "https://jaksimharu.netlify.app");
+  res.header("Access-Control-Allow-Headers",
+  "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-HTTP-Method-Override, Set-Cookie, Cookie");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  next();  
+});  
 app.use(cookieParser());
 app.use(express.json());
 
