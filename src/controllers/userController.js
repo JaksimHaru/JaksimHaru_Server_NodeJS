@@ -113,6 +113,9 @@ export const getSchedule = async (req, res, next) => {
         responseScheduels.push(element);
       }
     });
+    responseScheduels.sort(function (x, y) {
+      return x.time.split("-")[0] - y.time.split("-")[0];
+    });
     res.status(200).json({ success: true, schedules: responseScheduels });
   } catch (err) {
     next(err);
