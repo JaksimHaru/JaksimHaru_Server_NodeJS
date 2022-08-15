@@ -28,7 +28,7 @@ export const postPosting = async (req, res, next) => {
 export const getPostingById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const posting = await Community.findById(id)
+    let posting = await Community.findById(id)
       .populate({
         path: "comments",
         populate: {
@@ -38,6 +38,9 @@ export const getPostingById = async (req, res, next) => {
       })
       .populate("userId");
     if (!posting) return next(createError(404, "Posting is not found"));
+    posting.comments.sort(function (x, y) {
+      return y.createdAt - x.createdAt;
+    });
     res.status(200).json({ success: true, posting });
   } catch (err) {
     next(err);
@@ -108,7 +111,6 @@ export const getPostingsByCategory = async (req, res, next) => {
     postings.sort(function (x, y) {
       return y.createdAt - x.createdAt;
     });
-    console.log(postings);
     res.status(200).json({ success: true, postings });
   } catch (err) {
     next(err);
