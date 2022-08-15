@@ -43,7 +43,14 @@ export const refreshToken = async (req, res, next) => {
         expiresIn: "1h",
       }
     );
-    res.status(200).json({ newRefreshToken, accessToken });
+    res
+      .status(200)
+      .cookie("refresh_token", newRefreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      })
+      .json(accessToken);
   } catch (err) {
     next(err);
   }
@@ -117,7 +124,14 @@ export const signin = async (req, res, next) => {
       isAdmin: user.isAdmin,
       img: user.img,
     });
-    res.status(200).json({ refreshToken, accessToken, responseUser });
+    res
+      .status(200)
+      .cookie("refresh_token", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+      })
+      .json({ accessToken, responseUser });
   } catch (err) {
     next(err);
   }

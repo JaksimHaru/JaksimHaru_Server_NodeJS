@@ -15,21 +15,22 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 const logger = morgan("dev");
 
+app.set("trust proxy", 1);
 app.use(logger);
 app.use(
   cors({
     origin: "https://jaksimharu.netlify.app",
     credentials: true,
-    methods: ["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
   })
 );
 app.use(function (req, res, next) {
-  res.header("Content-Type", "application/json;charset=UTF-8");
   res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "https://jaksimharu.netlify.app");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-HTTP-Method-Override, Set-Cookie, Cookie"
   );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   next();
 });
 app.use(cookieParser());

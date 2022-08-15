@@ -2,8 +2,13 @@ import express from "express";
 import {
   getPostingById,
   postPosting,
-  modifyPosting,
+  editPosting,
   getPostingsByCategory,
+  postComment,
+  deletePosting,
+  getComment,
+  deleteComment,
+  editComment,
 } from "../controllers/communityController";
 import { postingImageUpload } from "../uploadFiles";
 import { verifyToken } from "../verifyToken";
@@ -20,9 +25,19 @@ communityRoutes.post(
 communityRoutes.get("/category", verifyToken, getPostingsByCategory);
 
 communityRoutes
+  .route("/comment/:id")
+  .all(verifyToken)
+  .get(getComment)
+  .post(editComment)
+  .delete(deleteComment);
+
+communityRoutes
   .route("/:id")
   .all(verifyToken)
   .get(getPostingById)
-  .post(postingImageUpload.single("image"), modifyPosting);
+  .post(postingImageUpload.single("image"), editPosting)
+  .delete(deletePosting);
+
+communityRoutes.post("/:id/comment", verifyToken, postComment);
 
 export default communityRoutes;

@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "jaksimharu.shop:8800",
+  "host": "https://jaksimharu.shop",
   "basePath": "/api",
   "tags": [
     {
@@ -488,7 +488,7 @@
         }
       }
     },
-    "/users/todo/:date": {
+    "/users/todo/{date}": {
       "get": {
         "summary": "AccessToken에 담긴 유저정보로 Todo 날짜별 조회",
         "tags": ["Todo API"],
@@ -518,7 +518,7 @@
         }
       }
     },
-    "/users/schedule/:date": {
+    "/users/schedule/{date}": {
       "get": {
         "summary": "AccessToken에 담긴 유저정보로 Schedule 날짜별 조회",
         "tags": ["Schedule API"],
@@ -776,7 +776,7 @@
         }
       }
     },
-    "/comunity/:id": {
+    "/comunity/{id}": {
       "get": {
         "summary": "id의 글 가져오기",
         "tags": ["Community API"],
@@ -852,6 +852,28 @@
         "401": {
           "description": "다시 로그인 필요"
         }
+      },
+      "delete": {
+        "summary": "id 게시글 삭제",
+        "tags": ["Community API"],
+        "description": "게시글 삭제",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "게시글 삭제 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
       }
     },
     "/community/category": {
@@ -869,7 +891,7 @@
                 "success": {
                   "type": "boolean"
                 },
-                "posting": {
+                "postings": {
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/PostingObject"
@@ -880,6 +902,137 @@
           },
           "401": {
             "description": "다시 로그인 필요"
+          }
+        }
+      }
+    },
+    "/community/{id}/comment": {
+      "post": {
+        "summary": "id의 글에 댓글 추가",
+        "tags": ["Community API"],
+        "description": "{id}를 가진 posting에 댓글 추가",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Post Comment",
+            "in": "body",
+            "description": "Post Comment ",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "desc": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "posting": {
+                  "$ref": "#/definitions/PostingObject"
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "다시 로그인 필요"
+        }
+      }
+    },
+    "/community/comment/{id}": {
+      "get": {
+        "summary": "id의 댓글 가져오기",
+        "tags": ["Community API"],
+        "description": "id의 댓글 가져오기",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "comment": {
+                  "$ref": "#/definitions/CommentObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "다시 로그인 필요"
+          }
+        }
+      },
+      "post": {
+        "summary": "id의 댓글 수정",
+        "tags": ["Community API"],
+        "description": "id의 댓글 수정",
+        "parameters": [
+          {
+            "name": "Post Description",
+            "in": "body",
+            "description": "Post Description",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "desc": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "수정된 댓글 response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "comment": {
+                  "$ref": "#/definitions/CommentObject"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "댓글의 주인이 아니거나 로그인이 필요합니다."
+          }
+        }
+      },
+      "delete": {
+        "summary": "id 댓글 삭제",
+        "tags": ["Community API"],
+        "description": "댓글 삭제",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "댓글 삭제 성공",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "댓글의 주인이 아니거나 로그인이 필요합니다."
           }
         }
       }
@@ -974,10 +1127,35 @@
         "image": {
           "type": "string"
         },
+        "category": {
+          "type": "string"
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CommentObject"
+          }
+        },
+        "userId": {
+          "$ref": "#/definitions/User"
+        },
+        "anonymous": {
+          "type": "boolean"
+        },
+        "_id": {
+          "type": "string"
+        }
+      }
+    },
+    "CommentObject": {
+      "properties": {
         "userId": {
           "type": "string"
         },
-        "category": {
+        "postingId": {
+          "type": "string"
+        },
+        "desc": {
           "type": "string"
         },
         "_id": {

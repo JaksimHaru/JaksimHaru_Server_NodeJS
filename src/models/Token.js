@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 
 const tokenSchema = mongoose.Schema(
   {
-    userId: { type: String, required: true, unique: true },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      unique: true,
+    },
     refreshToken: { type: String, required: true },
   },
   { timestamps: true }
