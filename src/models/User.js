@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const UserSchema = new mongoose.Schema(
   {
     email: { type: String, required: true, unique: true },
-    img: { type: String },
+    img: { type: String, default: "https://jaksimharu.s3.ap-northeast-2.amazonaws.com/images/KakaoTalk_Photo_2022-08-18-01-29-57.png"},
     fromKakao: { type: Boolean, default: false },
     fromNaver: { type: Boolean, default: false },
     name: { type: String, required: true },

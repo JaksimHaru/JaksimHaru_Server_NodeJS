@@ -1,4 +1,3 @@
-import { trusted } from "mongoose";
 import { createError } from "../error";
 import User from "../models/User";
 
